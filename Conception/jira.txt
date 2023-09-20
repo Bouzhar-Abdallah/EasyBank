@@ -1,1 +1,1 @@
-https://easybank.atlassian.net/jira/software/projects/EB/boards/1
+https://easybank.atlassian.net/jira/software/c/projects/EAS/boards/2
