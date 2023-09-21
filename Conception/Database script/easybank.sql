@@ -1,16 +1,16 @@
 create table person(
 	id SERIAL primary key,
-	nom varchar(250),
-	prenom varchar(250),
-	dateNaissance Date,
-	numeroTel varchar(50),
-	adresse varchar(250),
-	adressemail varchar(250)
+	nom varchar(250) NOT NULL,
+	prenom varchar(250) NOT NULL,
+	dateNaissance Date NOT NULL,
+	numeroTel varchar(50) NOT NULL,
+	adresse varchar(250) NOT NULL,
+	adressemail varchar(250) NOT NULL
 );
 
 create table employer(
 	matricule varchar(20) primary key,
-	dateRecrutement Date
+	dateRecrutement Date NOT NULL
 ) INHERITS (person) ;
 create table client(
 	code varchar(20) primary key
@@ -18,56 +18,52 @@ create table client(
 
 create table mission(
 	code varchar(20) primary key,
-	nom varchar(20),
+	nom varchar(20) NOT NULL,
 	description varchar(250)
 );
 
 create table employer_mission(
 	employerId varchar(20),
-    FOREIGN key (employerId) REFERENCES employer(matricule),
+    FOREIGN key (employerId) REFERENCES employer(matricule) on DELETE CASCADE on UPDATE CASCADE,
     missionId varchar(20),
-    FOREIGN key (missionId) REFERENCES mission(code),
-    dateDebut Date,
-    dateFin Date
+    FOREIGN key (missionId) REFERENCES mission(code) on DELETE CASCADE on UPDATE CASCADE,
+    dateDebut Date NOT NULL,
+    dateFin Date NOT NULL
 );
 
 CREATE TYPE etat_enum AS ENUM ('actif', 'suspendu', 'saisi');
 
 CREATE TABLE compte (
     numero bigint PRIMARY KEY,
-    solde double precision,
-    dateCreation DATE,
+    solde double precision DEFAULT(0) NOT NULL,
+    dateCreation DATE NOT NULL,
     etat etat_enum,
-    employerCode varchar(20),
-    FOREIGN KEY (employerCode) REFERENCES employer(matricule)
+    employerMatricule varchar(20),
+    FOREIGN KEY (employerMatricule) REFERENCES employer(matricule) on DELETE CASCADE on UPDATE CASCADE,
+	clientCode varchar(20),
+    FOREIGN KEY (clientCode) REFERENCES client(code) on DELETE CASCADE on UPDATE CASCADE
 );
 
 CREATE TABLE courant (
-    numeroCompte bigint,
-    decouvert double precision
+    numeroCompte bigint NOT NULL,
+    decouvert double precision NOT NULL
 ) INHERITS (compte) ;
 
 CREATE TABLE epargne (
-    numeroCompte bigint,
-    tauxInteret numeric
+    numeroCompte bigint NOT NULL,
+    tauxInteret numeric NOT NULL
 ) INHERITS (compte) ;
 
 CREATE TYPE type_operation_enum AS ENUM ('versement', 'retrait', 'virement');
 
 create table operation(
 	numero bigint primary key,
-	dateOperation timestamp,
+	dateOperation timestamp ,
     type type_operation_enum,
-	montant double precision,
+	montant double precision NOT NULL,
 	employerCode varchar(20),
-    FOREIGN KEY (employerCode) REFERENCES employer(matricule),
+    FOREIGN KEY (employerCode) REFERENCES employer(matricule) on DELETE CASCADE on UPDATE CASCADE,
 	compteNumero bigint,
-    FOREIGN KEY (compteNumero) REFERENCES compte(numero)
+    FOREIGN KEY (compteNumero) REFERENCES compte(numero) on DELETE CASCADE on UPDATE CASCADE
 );
 
-ALTER TABLE compte
-ADD clientCode varchar(20); 
-
-ALTER TABLE compte
-ADD CONSTRAINT fk_compte_client
-FOREIGN KEY (clientCode) REFERENCES client(code);
