@@ -26,7 +26,7 @@ create table mission(
 	description varchar(250)
 );
 
-create table employer_mission(
+create table affectation(
 	employerId varchar(20),
     FOREIGN key (employerId) REFERENCES employer(matricule) on DELETE CASCADE on UPDATE CASCADE,
     missionId varchar(20),
