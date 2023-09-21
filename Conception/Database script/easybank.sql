@@ -10,11 +10,15 @@ create table person(
 
 create table employer(
 	matricule varchar(20) primary key,
-	dateRecrutement Date NOT NULL
-) INHERITS (person) ;
+	dateRecrutement Date NOT NULL,
+	personId int,
+	FOREIGN key (personId) REFERENCES person(id) on DELETE CASCADE on UPDATE CASCADE
+);
 create table client(
-	code varchar(20) primary key
-) INHERITS (person) ;
+	code varchar(20) primary key,
+	personId int,
+	FOREIGN key (personId) REFERENCES person(id) on DELETE CASCADE on UPDATE CASCADE
+);
 
 create table mission(
 	code varchar(20) primary key,
@@ -46,13 +50,17 @@ CREATE TABLE compte (
 
 CREATE TABLE courant (
     numeroCompte bigint NOT NULL,
-    decouvert double precision NOT NULL
-) INHERITS (compte) ;
+    decouvert double precision NOT NULL,
+	compteNumero bigint,
+	FOREIGN key (compteNumero) REFERENCES compte(numero) on DELETE CASCADE on UPDATE CASCADE
+);
 
 CREATE TABLE epargne (
     numeroCompte bigint NOT NULL,
-    tauxInteret numeric NOT NULL
-) INHERITS (compte) ;
+    tauxInteret numeric NOT NULL,
+	compteNumero bigint,
+	FOREIGN key (compteNumero) REFERENCES compte(numero) on DELETE CASCADE on UPDATE CASCADE
+);
 
 CREATE TYPE type_operation_enum AS ENUM ('versement', 'retrait', 'virement');
 
