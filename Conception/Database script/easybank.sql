@@ -10,15 +10,11 @@ create table person(
 
 create table employer(
 	matricule varchar(20) primary key,
-	dateRecrutement Date,
-	personId int,
-    FOREIGN key (personId) REFERENCES person(id)
-);
+	dateRecrutement Date
+) INHERITS (person) ;
 create table client(
-	code varchar(20) primary key,
-	personId int,
-    FOREIGN key (personId) REFERENCES person(id)
-);
+	code varchar(20) primary key
+) INHERITS (person) ;
 
 create table mission(
 	code varchar(20) primary key,
@@ -48,15 +44,15 @@ CREATE TABLE compte (
 
 CREATE TABLE courant (
     numeroCompte bigint,
-    decouvert double precision,
-    FOREIGN KEY (numeroCompte) REFERENCES compte(numero)
-);
+    decouvert double precision
+) INHERITS (compte) ;
 
 CREATE TABLE epargne (
     numeroCompte bigint,
-    tauxInteret numeric,
-    FOREIGN KEY (numeroCompte) REFERENCES compte(numero)
-);
+    tauxInteret numeric
+) INHERITS (compte) ;
+
+CREATE TYPE type_operation_enum AS ENUM ('versement', 'retrait', 'virement');
 
 create table operation(
 	numero bigint primary key,
@@ -74,4 +70,4 @@ ADD clientCode varchar(20);
 
 ALTER TABLE compte
 ADD CONSTRAINT fk_compte_client
-FOREIGN KEY (clientID) REFERENCES client(code);
+FOREIGN KEY (clientCode) REFERENCES client(code);
