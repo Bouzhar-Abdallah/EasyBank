@@ -2,7 +2,7 @@ package Objects;
 
 import java.util.Date;
 
-public class Person {
+public abstract class Person {
     private Integer id;
     private String nom;
     private String prenom;

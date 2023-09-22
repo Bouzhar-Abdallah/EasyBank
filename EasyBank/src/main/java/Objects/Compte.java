@@ -5,7 +5,7 @@ import Enums.Etat_enum;
 import java.util.Date;
 import java.util.List;
 
-public class Compte {
+public abstract class Compte {
     private Long numero;
     private Double solde;
     private Date dateCreation;
