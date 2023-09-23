@@ -5,16 +5,16 @@ import java.util.Date;
 import java.util.List;
 
 public class Employer extends Person{
-    private String matricule;
+    private Integer matricule;
 
     private LocalDate dateRecrutement;
     private List<Affectation> affectations;
 
-    public String getMatricule() {
+    public Integer getMatricule() {
         return matricule;
     }
 
-    public void setMatricule(String matricule) {
+    public void setMatricule(Integer matricule) {
         this.matricule = matricule;
     }
 

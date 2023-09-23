@@ -9,6 +9,8 @@ import Utils.DBConnection;
 import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +44,7 @@ public class EmployerDAO implements PersonDAOInterface {
             }
 
             //get the inserted person id
-
+            PreparedStatement stmtEmployer = null;
             try (var generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     emp.setId(generatedKeys.getInt(1));
@@ -53,19 +55,34 @@ public class EmployerDAO implements PersonDAOInterface {
                     return Optional.empty();
                 }
             }
+            //emp.setId(generatedKeys.getInt(1));
             try{
                 // Create the employer record with the inserted person ID
-                String insertEmployerQuery = "insert into employer(matricule,daterecrutement,personId) values(?,?,?)";
-                PreparedStatement stmtEmployer = connection.prepareStatement(insertEmployerQuery);
-                stmtEmployer.setString(1,"xxxx");
-                stmtEmployer.setDate(2,java.sql.Date.valueOf(emp.getDateRecrutement()));
+                String insertEmployerQuery = "insert into employer(daterecrutement,personId) values(?,?)";
+                stmtEmployer = connection.prepareStatement(insertEmployerQuery,PreparedStatement.RETURN_GENERATED_KEYS);
+                //stmtEmployer.setString(1,"test2");
+                stmtEmployer.setDate(1,java.sql.Date.valueOf(emp.getDateRecrutement()));
                 // part of the Java Database Connectivity (JDBC) library for working with databases.
-                stmtEmployer.setInt(3,emp.getId());
+                stmtEmployer.setInt(2,emp.getId());
                 try{
                     stmtEmployer.executeUpdate();
-                }catch(Exception e){
+                    var generatedKeys2 = stmtEmployer.getGeneratedKeys();
+                    try {
+                        if (generatedKeys2.next()) {
+                            emp.setMatricule(generatedKeys2.getInt(1));
+                        } else {
+                            //rollback transaction
+                            connection.rollback();
+                            return Optional.empty();
+                        }
+                    }catch (Exception e){
+                        System.out.println("test test" + e.getMessage());
+                    }
+                    //var generatedKeys2 = stmtEmployer.getGeneratedKeys();
+                }catch(SQLException e){
                     connection.rollback();
                     System.out.println("*****   une erreur est servunue   *****");
+                    System.out.println(e.getMessage());
                 }
 
             }catch(Exception e){
@@ -74,8 +91,10 @@ public class EmployerDAO implements PersonDAOInterface {
 
             // Commit the transaction if everything was successful
             connection.commit();
-            return Optional.of(emp);
             //end transaction
+
+            Optional<Person> createdEmp = search(emp.getMatricule());
+            return createdEmp;
         }catch(Exception e){
             System.out.println(e.getClass()+"::"+e.getMessage());
         }
@@ -83,6 +102,7 @@ public class EmployerDAO implements PersonDAOInterface {
 
 
     }
+
 
     @Override
     public Integer delete(Integer id) {
@@ -93,8 +113,45 @@ public class EmployerDAO implements PersonDAOInterface {
     public List<Person> getAll() {
         return null;
     }
-    public Employer search(String matricule){
-        return null;
+    public Optional<Person> search(Integer matricule){
+        Employer emp = new Employer();
+        String searchQuery = "SELECT " +
+                "  person.id, " +
+                "  person.nom, " +
+                "  person.prenom, " +
+                "  person.datenaissance, " +
+                "  person.numerotel, " +
+                "  person.adresse, " +
+                "  person.adressemail, " +
+                "  employer.matricule, " +
+                "  employer.daterecrutement," +
+                "  employer.personid " +
+                "FROM " +
+                "  person " +
+                "   INNER JOIN employer " +
+                "   ON person.id = employer.personid " +
+                "WHERE" +
+                "    employer.matricule = ?" +
+                ";";
+        try{
+        PreparedStatement stmt = connection.prepareStatement(searchQuery);
+        stmt.setInt(1,matricule);
+            ResultSet result = stmt.executeQuery();
+            while(result.next()){
+                emp.setId(result.getInt("id"));
+                emp.setNom(result.getString("nom"));
+                emp.setPrenom(result.getString("prenom"));
+                emp.setAdresseEmail(result.getString("adressemail"));
+                emp.setAdresse(result.getString("adresse"));
+                emp.setMatricule(result.getInt("matricule"));
+                emp.setNumeroTel(result.getString("numerotel"));
+             /*incomplete*/
+            }
+            return Optional.of(emp);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return Optional.empty();
     }
     public List<Affectation> getAllAffectations(Employer employer){
         return null;
