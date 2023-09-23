@@ -7,6 +7,7 @@ import Utils.DBConnection;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Optional;
 
 public class ClientDAO implements PersonDAOInterface {
     private Connection connection;
@@ -14,7 +15,7 @@ public class ClientDAO implements PersonDAOInterface {
         Connection connection = DBConnection.getDBConnection();
     }
     @Override
-    public Person create(Person person) {
+    public Optional<Person> create(Person person) {
         return null;
     }
 
