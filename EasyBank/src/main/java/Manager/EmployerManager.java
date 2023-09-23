@@ -83,12 +83,34 @@ public class EmployerManager {
             System.out.println(e.getClass() + "::" + e.getMessage());
         }
     }
-    public void deleteEmployee(Integer matricule){
+    public void deleteEmployee(){
         Scanner sc = new Scanner(System.in);
 
         System.out.println("enter employe matricule to delete");
         Integer matriculeTodelete = sc.nextInt();
-        employerDAO.delete(matriculeTodelete);
+        sc.nextLine();
+        Optional<Person> employer = employerDAO.search(matriculeTodelete);
+        if (employer.isPresent()) {
+            Employer employerToDelete = (Employer) employer.get();
+            //Employer createdPerson = (Employer) employerToDelete.getId();
+            System.out.println(String.format("*****   found employee ID[%d] nom :[%s]  *****", employerToDelete.getMatricule(), employerToDelete.getNom()));
+            System.out.println("Press [y] to confirm delete \n");
+            System.out.println("Press [any] to cancel delete \n");
+            if (sc.nextLine().equals("y")){
+
+                if(employerDAO.delete(employerToDelete.getId()) == 0){
+                    System.out.println("deletion failed");
+                }else{
+                    System.out.println("employee deleted succesefully");
+                }
+            }else{
+                System.out.flush();
+                deleteEmployee();
+            }
+        } else {
+            System.out.println("*****   employe not found   *****");
+            deleteEmployee();
+        }
     }
 
 }

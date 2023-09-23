@@ -13,8 +13,8 @@ public class Main {
 
         EmployerManager empManager = new EmployerManager();
 
-        //empManager.createEmployer();
-        empManager.addEmployee();
+        //empManager.addEmployee();
+        empManager.deleteEmployee();
 
     }
 }

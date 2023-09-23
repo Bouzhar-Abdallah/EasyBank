@@ -103,9 +103,20 @@ public class EmployerDAO implements PersonDAOInterface {
 
 
     @Override
-    public Integer delete(Integer matricule) {
-        Optional<Person> employerToDelete = search(matricule);
-        
+    public Integer delete(Integer id) {
+        String deleteQuery = "delete from person where id = ?";
+        try{
+            PreparedStatement stmt = connection.prepareStatement(deleteQuery);
+            stmt.setInt(1,id);
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0){
+                throw new Exception("deletion failed");
+            }else{
+                return affectedRows;
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
         return null;
     }
 
@@ -137,7 +148,7 @@ public class EmployerDAO implements PersonDAOInterface {
         PreparedStatement stmt = connection.prepareStatement(searchQuery);
         stmt.setInt(1,matricule);
             ResultSet result = stmt.executeQuery();
-            while(result.next()){
+            if(result.next()){
                 emp.setId(result.getInt("id"));
                 emp.setNom(result.getString("nom"));
                 emp.setPrenom(result.getString("prenom"));
@@ -146,8 +157,8 @@ public class EmployerDAO implements PersonDAOInterface {
                 emp.setMatricule(result.getInt("matricule"));
                 emp.setNumeroTel(result.getString("numerotel"));
              /*incomplete*/
-            }
             return Optional.of(emp);
+            }
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
