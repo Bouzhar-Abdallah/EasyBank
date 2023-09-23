@@ -8,6 +8,9 @@ public abstract class Person {
     private String nom;
     private String prenom;
     private LocalDate dateNaissance;
+    private String numeroTel;
+    private String adresse;
+    private String adresseEmail;
 
     public Integer getId() {
         return id;
@@ -65,8 +68,5 @@ public abstract class Person {
         this.adresseEmail = adresseEmail;
     }
 
-    private String numeroTel;
-    private String adresse;
-    private String adresseEmail;
 
 }

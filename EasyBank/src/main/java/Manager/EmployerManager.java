@@ -4,6 +4,8 @@ import Implementations.EmployerDAO;
 import Objects.Employer;
 import Objects.Person;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -110,6 +112,28 @@ public class EmployerManager {
         } else {
             System.out.println("*****   employe not found   *****");
             deleteEmployee();
+        }
+    }
+    public void showAllEmployees() {
+        System.out.println("All Employees:");
+
+        List<Person> employees = employerDAO.getAll();
+
+        for (Person person : employees) {
+            if (person instanceof Employer) {
+                Employer employee = (Employer) person;
+
+                System.out.println("Employee Matricule: " + employee.getMatricule());
+                System.out.println("Nom: " + employee.getNom());
+                System.out.println("Prenom: " + employee.getPrenom());
+                System.out.println("Date de Naissance: " + employee.getDateNaissance());
+                System.out.println("Numero de Telephone: " + employee.getNumeroTel());
+                System.out.println("Adresse: " + employee.getAdresse());
+                System.out.println("Adresse Email: " + employee.getAdresseEmail());
+                System.out.println("Date de Recrutement: " + employee.getDateRecrutement());
+
+                System.out.println("------------------------------");
+            }
         }
     }
 

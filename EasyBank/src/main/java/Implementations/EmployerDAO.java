@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -122,7 +123,42 @@ public class EmployerDAO implements PersonDAOInterface {
 
     @Override
     public List<Person> getAll() {
-        return null;
+        String getAllQuery = "SELECT " +
+                "  person.id, " +
+                "  person.nom, " +
+                "  person.prenom, " +
+                "  person.datenaissance, " +
+                "  person.numerotel, " +
+                "  person.adresse, " +
+                "  person.adressemail, " +
+                "  employer.matricule, " +
+                "  employer.daterecrutement," +
+                "  employer.personid " +
+                "FROM " +
+                "  person " +
+                "   INNER JOIN employer " +
+                "   ON person.id = employer.personid ;";
+        List<Person> employees = new ArrayList<>();
+                Employer emp = new Employer();
+        try{
+            PreparedStatement stmt = connection.prepareStatement(getAllQuery);
+            ResultSet result = stmt.executeQuery();
+            while(result.next()){
+                emp.setId(result.getInt("id"));
+                emp.setNom(result.getString("nom"));
+                emp.setPrenom(result.getString("prenom"));
+                emp.setAdresseEmail(result.getString("adressemail"));
+                emp.setAdresse(result.getString("adresse"));
+                emp.setMatricule(result.getInt("matricule"));
+                emp.setNumeroTel(result.getString("numerotel"));
+                emp.setDateRecrutement(result.getDate("daterecrutement").toLocalDate());
+                emp.setDateNaissance(result.getDate("datenaissance").toLocalDate());
+                employees.add(emp);
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return employees;
     }
     public Optional<Person> search(Integer matricule){
         Employer emp = new Employer();
@@ -156,6 +192,8 @@ public class EmployerDAO implements PersonDAOInterface {
                 emp.setAdresse(result.getString("adresse"));
                 emp.setMatricule(result.getInt("matricule"));
                 emp.setNumeroTel(result.getString("numerotel"));
+                emp.setDateRecrutement(result.getDate("daterecrutement").toLocalDate());
+                emp.setDateNaissance(result.getDate("datenaissance").toLocalDate());
              /*incomplete*/
             return Optional.of(emp);
             }
