@@ -92,9 +92,7 @@ public class EmployerDAO implements PersonDAOInterface {
             // Commit the transaction if everything was successful
             connection.commit();
             //end transaction
-
-            Optional<Person> createdEmp = search(emp.getMatricule());
-            return createdEmp;
+            return search(emp.getMatricule());
         }catch(Exception e){
             System.out.println(e.getClass()+"::"+e.getMessage());
         }
@@ -105,7 +103,9 @@ public class EmployerDAO implements PersonDAOInterface {
 
 
     @Override
-    public Integer delete(Integer id) {
+    public Integer delete(Integer matricule) {
+        Optional<Person> employerToDelete = search(matricule);
+        
         return null;
     }
 

@@ -83,5 +83,12 @@ public class EmployerManager {
             System.out.println(e.getClass() + "::" + e.getMessage());
         }
     }
+    public void deleteEmployee(Integer matricule){
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("enter employe matricule to delete");
+        Integer matriculeTodelete = sc.nextInt();
+        employerDAO.delete(matriculeTodelete);
+    }
 
 }
