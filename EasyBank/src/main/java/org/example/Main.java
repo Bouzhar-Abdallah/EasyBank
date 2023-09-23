@@ -15,7 +15,8 @@ public class Main {
 
         //empManager.addEmployee();
         //empManager.deleteEmployee();
-        empManager.showAllEmployees();
+        //empManager.showAllEmployees();
+        empManager.updateEmployee();
 
     }
 }

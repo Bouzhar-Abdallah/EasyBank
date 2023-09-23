@@ -16,7 +16,7 @@ public class ClientDAO implements PersonDAOInterface {
     }
     @Override
     public Optional<Person> create(Person person) {
-        return null;
+        return Optional.empty();
     }
 
     @Override
@@ -31,4 +31,5 @@ public class ClientDAO implements PersonDAOInterface {
     public Client search(String code){
         return null;
     }
+    public Optional<Person> update(Person person){return Optional.empty();}
 }

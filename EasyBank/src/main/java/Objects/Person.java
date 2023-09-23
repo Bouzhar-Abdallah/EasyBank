@@ -1,5 +1,6 @@
 package Objects;
 
+import javax.management.ObjectInstance;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -11,7 +12,6 @@ public abstract class Person {
     private String numeroTel;
     private String adresse;
     private String adresseEmail;
-
     public Integer getId() {
         return id;
     }

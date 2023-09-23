@@ -9,4 +9,5 @@ public interface PersonDAOInterface {
     Optional<Person> create(Person person);
     Integer delete(Integer id);
     List<Person> getAll();
+    Optional<Person> update(Person person);
 }
