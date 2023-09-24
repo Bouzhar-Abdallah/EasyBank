@@ -16,10 +16,11 @@ public class Main {
         ClientManager cltManager = new ClientManager();
         //empManager.addEmployee();
         //empManager.deleteEmployee();
-        //empManager.showAllEmployees();
+        //empManager.showAll();
         //empManager.updateEmployee();
         //empManager.searchByAttribute();
         //cltManager.create();
-        cltManager.delete();
+        //cltManager.delete();
+        cltManager.showAll();
     }
 }

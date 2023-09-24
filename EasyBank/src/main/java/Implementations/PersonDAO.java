@@ -38,7 +38,7 @@ abstract class PersonDAO implements PersonDAOInterface {
     @Override
     public List<Person> getAll(String type) {
         String getAllQuery;
-        if (type.equals("employer")){
+        if (type.equals("employer")) {
             getAllQuery = "SELECT " +
                     "  person.id, " +
                     "  person.nom, " +
@@ -54,7 +54,7 @@ abstract class PersonDAO implements PersonDAOInterface {
                     "  person " +
                     "   INNER JOIN employer " +
                     "   ON person.id = employer.personid ;";
-        }else{
+        } else {
             getAllQuery = "SELECT " +
                     "  person.id, " +
                     "  person.nom, " +
@@ -66,8 +66,8 @@ abstract class PersonDAO implements PersonDAOInterface {
                     "  client.code " +
                     "FROM " +
                     "  person " +
-                    "   INNER JOIN employer " +
-                    "   ON person.id = employer.personid ;";
+                    "   INNER JOIN client " +
+                    "   ON person.id = client.personid ;";
         }
 
 
@@ -82,10 +82,12 @@ abstract class PersonDAO implements PersonDAOInterface {
                 emp.setPrenom(result.getString("prenom"));
                 emp.setAdresseEmail(result.getString("adressemail"));
                 emp.setAdresse(result.getString("adresse"));
-                emp.setMatricule(result.getInt("matricule"));
                 emp.setNumeroTel(result.getString("numerotel"));
-                emp.setDateRecrutement(result.getDate("daterecrutement").toLocalDate());
                 emp.setDateNaissance(result.getDate("datenaissance").toLocalDate());
+                if (type.equals("employer")) {
+                    emp.setMatricule(result.getInt("matricule"));
+                    emp.setDateRecrutement(result.getDate("daterecrutement").toLocalDate());
+                }
                 persons.add(emp);
             }
         } catch (SQLException e) {
@@ -137,6 +139,7 @@ abstract class PersonDAO implements PersonDAOInterface {
         }
         return Optional.empty();
     }
+
     public Optional<Person> searchByDateNaissance(LocalDate datenaissance) {
         Employer emp = new Employer();
         String searchQuery = "SELECT " +
@@ -179,6 +182,7 @@ abstract class PersonDAO implements PersonDAOInterface {
         }
         return Optional.empty();
     }
+
     public Optional<Person> searchByNumeroTel(String numeroTel) {
         Employer emp = new Employer();
         String searchQuery = "SELECT " +

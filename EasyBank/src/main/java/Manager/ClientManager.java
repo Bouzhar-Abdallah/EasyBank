@@ -103,14 +103,13 @@ public class ClientManager {
             if (person instanceof Employer) {
                 Employer employee = (Employer) person;
 
-                System.out.println("Employee Matricule: " + employee.getMatricule());
+
                 System.out.println("Nom: " + employee.getNom());
                 System.out.println("Prenom: " + employee.getPrenom());
                 System.out.println("Date de Naissance: " + employee.getDateNaissance());
                 System.out.println("Numero de Telephone: " + employee.getNumeroTel());
                 System.out.println("Adresse: " + employee.getAdresse());
                 System.out.println("Adresse Email: " + employee.getAdresseEmail());
-                System.out.println("Date de Recrutement: " + employee.getDateRecrutement());
 
                 System.out.println("------------------------------");
             }

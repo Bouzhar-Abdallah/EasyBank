@@ -116,7 +116,7 @@ public class EmployerManager {
         }
     }
 
-    public void showAllEmployees() {
+    public void showAll() {
         System.out.println("All Employees:");
 
         List<Person> employees = employerDAO.getAll();
@@ -125,7 +125,7 @@ public class EmployerManager {
             if (person instanceof Employer) {
                 Employer employee = (Employer) person;
 
-                System.out.println("Employee Matricule: " + employee.getMatricule());
+                System.out.println("Matricule: " + employee.getMatricule());
                 System.out.println("Nom: " + employee.getNom());
                 System.out.println("Prenom: " + employee.getPrenom());
                 System.out.println("Date de Naissance: " + employee.getDateNaissance());
