@@ -19,6 +19,7 @@ public class Main {
         //empManager.showAllEmployees();
         //empManager.updateEmployee();
         //empManager.searchByAttribute();
-        cltManager.create();
+        //cltManager.create();
+        cltManager.delete();
     }
 }

@@ -67,22 +67,22 @@ public class ClientManager {
     public void delete() {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("enter employe matricule to delete");
+        System.out.println("enter client code to delete");
         Integer codeTodelete = sc.nextInt();
         sc.nextLine();
-        Optional<Person> employer = clientDAO.searchByClientCode(codeTodelete);
-        if (employer.isPresent()) {
-            Employer employerToDelete = (Employer) employer.get();
+        Optional<Person> client = clientDAO.searchByClientCode(codeTodelete);
+        if (client.isPresent()) {
+            Client clientToDelete = (Client) client.get();
             //Employer createdPerson = (Employer) employerToDelete.getId();
-            System.out.println(String.format("*****   found employee ID[%d] nom :[%s]  *****", employerToDelete.getMatricule(), employerToDelete.getNom()));
+            System.out.println(String.format("*****   found client code :[%d] nom :[%s]  *****", clientToDelete.getCode(), clientToDelete.getNom()));
             System.out.println("Press [y] to confirm delete \n");
             System.out.println("Press [any] to cancel delete \n");
             if (sc.nextLine().equals("y")) {
 
-                if (clientDAO.delete(employerToDelete.getId()) == 0) {
+                if (clientDAO.delete(clientToDelete.getId()) == 0) {
                     System.out.println("deletion failed");
                 } else {
-                    System.out.println("employee deleted succesefully");
+                    System.out.println("client deleted succesefully");
                 }
             } else {
                 System.out.flush();
