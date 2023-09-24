@@ -21,6 +21,7 @@ public class Main {
         //empManager.searchByAttribute();
         //cltManager.create();
         //cltManager.delete();
-        cltManager.showAll();
+        //cltManager.showAll();
+        cltManager.update();
     }
 }

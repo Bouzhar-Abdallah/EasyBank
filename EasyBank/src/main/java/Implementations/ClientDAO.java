@@ -99,7 +99,40 @@ public class ClientDAO extends PersonDAO implements ClientDAOInterface {
 
     }
     @Override
-    public Optional<Person> update(Person person){return Optional.empty();}
+    public Optional<Person> update(Person person){
+        Client clientToUpdate = (Client) person;
+        try {
+            connection.setAutoCommit(false);
+            String updatePersonQuery = "update person set nom = ? , prenom = ? , datenaissance = ?, numeroTel = ? , adresse = ? , adressemail =? where id = ?";
+            PreparedStatement stmtPerson = connection.prepareStatement(updatePersonQuery);
+            stmtPerson.setString(1, clientToUpdate.getNom());
+            stmtPerson.setString(2, clientToUpdate.getPrenom());
+            stmtPerson.setDate(3, java.sql.Date.valueOf(clientToUpdate.getDateNaissance()));
+            stmtPerson.setString(4, clientToUpdate.getNumeroTel());
+            stmtPerson.setString(5, clientToUpdate.getAdresse());
+            stmtPerson.setString(6, clientToUpdate.getAdresseEmail());
+            stmtPerson.setInt(7, clientToUpdate.getId());
+            int rowsUpdated = stmtPerson.executeUpdate();
+            if (rowsUpdated == 0) {
+                connection.rollback();
+            }
+
+            String updateEmpQuery = "update client set updatedat = CURRENT_TIMESTAMP where code = ? ";
+            PreparedStatement stmtEmp = connection.prepareStatement(updateEmpQuery);
+            stmtEmp.setInt(1,clientToUpdate.getCode());
+            rowsUpdated = stmtEmp.executeUpdate();
+            if (rowsUpdated == 0) {
+                connection.rollback();
+            }
+            connection.commit();
+            //connection.close();
+            //end transaction
+            return searchByClientCode(clientToUpdate.getCode());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return Optional.empty();
+    }
 
     public List<Person> getAll() {
         return getAll("client");

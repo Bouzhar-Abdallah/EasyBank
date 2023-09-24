@@ -128,7 +128,7 @@ public class EmployerDAO extends PersonDAO implements EmployerDAOInterface {
                 connection.rollback();
             }
 
-            String updateEmpQuery = "update employer set daterecrutement = ? where matricule = ? ";
+            String updateEmpQuery = "update employer set daterecrutement = ?, updatedat = CURRENT_TIMESTAMP where matricule = ?";
             PreparedStatement stmtEmp = connection.prepareStatement(updateEmpQuery);
             stmtEmp.setDate(1, java.sql.Date.valueOf(employerToUpdate.getDateRecrutement()));
             stmtEmp.setInt(2,employerToUpdate.getMatricule());

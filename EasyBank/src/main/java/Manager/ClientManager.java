@@ -126,57 +126,57 @@ public class ClientManager {
         sc.nextLine();
         Optional<Person> optionalEmployer = clientDAO.searchByClientCode(code);
         if (optionalEmployer.isPresent()) {
-            Employer employerToUpdate = (Employer) optionalEmployer.get();
-            System.out.println(String.format("*****   found employee | Matricule :[%d] | nom :[%s] |  *****", employerToUpdate.getMatricule(), employerToUpdate.getNom()));
+            Client clientToUpdate = (Client) optionalEmployer.get();
+            System.out.println(String.format("*****   found employee | Matricule :[%d] | nom :[%s] |  *****", clientToUpdate.getCode(), clientToUpdate.getNom()));
             /*start from here*/
             /* nom */
-            System.out.println("nom :"+employerToUpdate.getNom());
+            System.out.println("nom :"+clientToUpdate.getNom());
             System.out.println("update it ?");
             System.out.println("Press [y] to confirm \n");
             System.out.println("Press [any] to go next \n");
             if (sc.nextLine().equals("y")) {
                 System.out.println("entrez le neuvou nom :");
-                employerToUpdate.setNom(sc.nextLine());
+                clientToUpdate.setNom(sc.nextLine());
             }
             /* prenom */
-            System.out.println("prenom :"+employerToUpdate.getPrenom());
+            System.out.println("prenom :"+clientToUpdate.getPrenom());
             System.out.println("update it ?");
             System.out.println("Press [y] to confirm \n");
             System.out.println("Press [any] to go next \n");
             if (sc.nextLine().equals("y")) {
                 System.out.println("entrez le neuvou prenom :");
-                employerToUpdate.setPrenom(sc.nextLine());
+                clientToUpdate.setPrenom(sc.nextLine());
             }
             /* numeroTel*/
-            System.out.println("numero de tel :"+employerToUpdate.getNumeroTel());
+            System.out.println("numero de tel :"+clientToUpdate.getNumeroTel());
             System.out.println("update it ?");
             System.out.println("Press [y] to confirm \n");
             System.out.println("Press [any] to go next \n");
             if (sc.nextLine().equals("y")) {
                 System.out.println("entrez le neuvou numeroTel :");
-                employerToUpdate.setNumeroTel(sc.nextLine());
+                clientToUpdate.setNumeroTel(sc.nextLine());
             }
             /* adresse*/
-            System.out.println("adresse :"+employerToUpdate.getAdresse());
+            System.out.println("adresse :"+clientToUpdate.getAdresse());
             System.out.println("update it ?");
             System.out.println("Press [y] to confirm \n");
             System.out.println("Press [any] to go next \n");
             if (sc.nextLine().equals("y")) {
                 System.out.println("entrez le neuvou adresse :");
-                employerToUpdate.setAdresse(sc.nextLine());
+                clientToUpdate.setAdresse(sc.nextLine());
             }
             /* adressmail*/
-            System.out.println("adresse Email :"+employerToUpdate.getAdresseEmail());
+            System.out.println("adresse Email :"+clientToUpdate.getAdresseEmail());
             System.out.println("update it ?");
             System.out.println("Press [y] to confirm \n");
             System.out.println("Press [any] to go next \n");
             if (sc.nextLine().equals("y")) {
                 System.out.println("entrez le neuvou adresse Email :");
-                employerToUpdate.setAdresseEmail(sc.nextLine());
+                clientToUpdate.setAdresseEmail(sc.nextLine());
             }
             /* datenaissance */
 
-            System.out.println("Date de naissance :"+employerToUpdate.getDateNaissance());
+            System.out.println("Date de naissance :"+clientToUpdate.getDateNaissance());
             System.out.println("update it ?");
             System.out.println("Press [y] to confirm \n");
             System.out.println("Press [any] to go next \n");
@@ -189,7 +189,7 @@ public class ClientManager {
                     try {
                         LocalDate inputDate = LocalDate.parse(tmp_date, formatter);
                         if (Period.between(inputDate, LocalDate.now()).getYears() >= 18) {
-                            employerToUpdate.setDateNaissance(inputDate);
+                            clientToUpdate.setDateNaissance(inputDate);
                             break; // Exit the loop if date is valid
                         } else {
                             System.out.println("*****   INVALIDE DATE DE NAISSANCE POUR L'EMPLOYEE   *****");
@@ -223,7 +223,7 @@ public class ClientManager {
                 }
             }*/
 
-            Optional<Person> updatedEmp = clientDAO.update(employerToUpdate);
+            Optional<Person> updatedEmp = clientDAO.update(clientToUpdate);
             if (updatedEmp.isPresent()){
                 System.out.println("operation est effectué avec succes");
                 return;
