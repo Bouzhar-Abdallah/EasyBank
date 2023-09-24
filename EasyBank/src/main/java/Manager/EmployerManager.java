@@ -92,7 +92,7 @@ public class EmployerManager {
         System.out.println("enter employe matricule to delete");
         Integer matriculeTodelete = sc.nextInt();
         sc.nextLine();
-        Optional<Person> employer = employerDAO.search(matriculeTodelete);
+        Optional<Person> employer = employerDAO.searchByMatricule(matriculeTodelete);
         if (employer.isPresent()) {
             Employer employerToDelete = (Employer) employer.get();
             //Employer createdPerson = (Employer) employerToDelete.getId();
@@ -147,7 +147,7 @@ public class EmployerManager {
         System.out.println("enter employe matricule to update");
         Integer matricule = sc.nextInt();
         sc.nextLine();
-        Optional<Person> optionalEmployer = employerDAO.search(matricule);
+        Optional<Person> optionalEmployer = employerDAO.searchByMatricule(matricule);
         if (optionalEmployer.isPresent()) {
             Employer employerToUpdate = (Employer) optionalEmployer.get();
             System.out.println(String.format("*****   found employee | Matricule :[%d] | nom :[%s] |  *****", employerToUpdate.getMatricule(), employerToUpdate.getNom()));
@@ -248,7 +248,7 @@ public class EmployerManager {
 
             Optional<Person> updatedEmp = employerDAO.update(employerToUpdate);
             if (updatedEmp.isPresent()){
-                System.out.println("l'operation est effectué avec succes");
+                System.out.println("operation est effectué avec succes");
                 return;
             }else{
                 System.out.println("l'operation a echoué");
@@ -261,13 +261,67 @@ public class EmployerManager {
         }
     }
 
-    public void test() {
-        Optional<Person> emp = employerDAO.search(16);
+    public void searchByAttribute() {
+        /*Optional<Person> emp = employerDAO.search(16);
         if (emp.isPresent()) {
             Person person = emp.get();
 
+        }*/
+        Scanner sc = new Scanner(System.in);
+        System.out.println("search by :");
+        System.out.println("1 : matricule");
+        System.out.println("2 : nom");
+        System.out.println("3 : date de naissance");
+        System.out.println("4 : numero de tel");
+        Integer choix = sc.nextInt();
+        Optional<Person> optionalPerson = Optional.empty();
+        sc.nextLine();
+        switch (choix) {
+            case 1 -> {
+                System.out.println("entrez le matricule");
+                Integer matricule = sc.nextInt();
+                sc.nextLine();
+                optionalPerson = employerDAO.searchByMatricule(matricule);
+            }
+            case 2 -> {
+                System.out.println("entrez le nom");
+                String nom = sc.nextLine();
+                optionalPerson = employerDAO.searchByNom(nom);
+            }
+            case 3 -> {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                System.out.println("entrez la date de naissance");
+                String tmp_date = sc.nextLine();
+                LocalDate inputDate = LocalDate.parse(tmp_date, formatter);
+                optionalPerson = employerDAO.searchByDateNaissance(inputDate);
+            }
+            case 4 -> {
+                System.out.println("entrez le numero de tel");
+                String numeroTel = sc.nextLine();
+                optionalPerson = employerDAO.searchByNom(numeroTel);
+            }
+            default -> {
+            }
         }
+        if (optionalPerson.isPresent()){
+            Employer employee = (Employer) optionalPerson.get();
 
+                System.out.println("Employee Matricule: " + employee.getMatricule());
+                System.out.println("Nom: " + employee.getNom());
+                System.out.println("Prenom: " + employee.getPrenom());
+                System.out.println("Date de Naissance: " + employee.getDateNaissance());
+                System.out.println("Numero de Telephone: " + employee.getNumeroTel());
+                System.out.println("Adresse: " + employee.getAdresse());
+                System.out.println("Adresse Email: " + employee.getAdresseEmail());
+                System.out.println("Date de Recrutement: " + employee.getDateRecrutement());
+
+                System.out.println("------------------------------");
+
+        }else{
+            System.out.println("employer not found");
+            System.out.flush();
+            searchByAttribute();
+        }
     }
 
 }

@@ -6,17 +6,17 @@ import Objects.Person;
 import Services.PersonDAOInterface;
 import Utils.DBConnection;
 
-import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class EmployerDAO implements PersonDAOInterface {
-    private Connection connection;
+    private final Connection connection;
 
     public EmployerDAO() {
         connection = DBConnection.getDBConnection();
@@ -47,7 +47,7 @@ public class EmployerDAO implements PersonDAOInterface {
             }
 
             //get the inserted person id
-            PreparedStatement stmtEmployer = null;
+            PreparedStatement stmtEmployer ;
             try (var generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     emp.setId(generatedKeys.getInt(1));
@@ -95,7 +95,7 @@ public class EmployerDAO implements PersonDAOInterface {
             // Commit the transaction if everything was successful
             connection.commit();
             //end transaction
-            return search(emp.getMatricule());
+            return searchByMatricule(emp.getMatricule());
         } catch (Exception e) {
             System.out.println(e.getClass() + "::" + e.getMessage());
         }
@@ -163,7 +163,52 @@ public class EmployerDAO implements PersonDAOInterface {
         return employees;
     }
 
-    public Optional<Person> search(Integer matricule) {
+
+    @Override
+    public Optional<Person> update(Person person) {
+        Employer employerToUpdate = (Employer) person;
+        try {
+            connection.setAutoCommit(false);
+            String updatePersonQuery = "update person set nom = ? , prenom = ? , datenaissance = ?, numeroTel = ? , adresse = ? , adressemail =? where id = ?";
+            PreparedStatement stmtPerson = connection.prepareStatement(updatePersonQuery);
+            stmtPerson.setString(1, employerToUpdate.getNom());
+            stmtPerson.setString(2, employerToUpdate.getPrenom());
+            stmtPerson.setDate(3, java.sql.Date.valueOf(employerToUpdate.getDateNaissance()));
+            stmtPerson.setString(4, employerToUpdate.getNumeroTel());
+            stmtPerson.setString(5, employerToUpdate.getAdresse());
+            stmtPerson.setString(6, employerToUpdate.getAdresseEmail());
+            stmtPerson.setInt(7, employerToUpdate.getId());
+            int rowsUpdated = stmtPerson.executeUpdate();
+            if (rowsUpdated == 0) {
+                connection.rollback();
+            }
+
+            String updateEmpQuery = "update employer set daterecrutement = ? where matricule = ? ";
+            PreparedStatement stmtEmp = connection.prepareStatement(updateEmpQuery);
+            stmtEmp.setDate(1, java.sql.Date.valueOf(employerToUpdate.getDateRecrutement()));
+            stmtEmp.setInt(2,employerToUpdate.getMatricule());
+            rowsUpdated = stmtEmp.executeUpdate();
+            if (rowsUpdated == 0) {
+                connection.rollback();
+            }
+            connection.commit();
+            //connection.close();
+            //end transaction
+            return searchByMatricule(employerToUpdate.getMatricule());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return Optional.empty();
+    }
+
+    public List<Affectation> getAllAffectations(Employer employer) {
+        return null;
+    }
+
+    public Affectation getCurrentAffectation(Employer employer) {
+        return null;
+    }
+    public Optional<Person> searchByMatricule(Integer matricule) {
         Employer emp = new Employer();
         String searchQuery = "SELECT " +
                 "  person.id, " +
@@ -205,49 +250,130 @@ public class EmployerDAO implements PersonDAOInterface {
         }
         return Optional.empty();
     }
-
-    @Override
-    public Optional<Person> update(Person person) {
-        Employer employerToUpdate = (Employer) person;
+    public Optional<Person> searchByNom(String nom) {
+        Employer emp = new Employer();
+        String searchQuery = "SELECT " +
+                "  person.id, " +
+                "  person.nom, " +
+                "  person.prenom, " +
+                "  person.datenaissance, " +
+                "  person.numerotel, " +
+                "  person.adresse, " +
+                "  person.adressemail, " +
+                "  employer.matricule, " +
+                "  employer.daterecrutement," +
+                "  employer.personid " +
+                "FROM " +
+                "  person " +
+                "   INNER JOIN employer " +
+                "   ON person.id = employer.personid " +
+                "WHERE" +
+                "    person.nom = ?" +
+                ";";
         try {
-            connection.setAutoCommit(false);
-            String updatePersonQuery = "update person set nom = ? , prenom = ? , datenaissance = ?, numeroTel = ? , adresse = ? , adressemail =? where id = ?";
-            PreparedStatement stmtPerson = connection.prepareStatement(updatePersonQuery);
-            stmtPerson.setString(1, employerToUpdate.getNom());
-            stmtPerson.setString(2, employerToUpdate.getPrenom());
-            stmtPerson.setDate(3, java.sql.Date.valueOf(employerToUpdate.getDateNaissance()));
-            stmtPerson.setString(4, employerToUpdate.getNumeroTel());
-            stmtPerson.setString(5, employerToUpdate.getAdresse());
-            stmtPerson.setString(6, employerToUpdate.getAdresseEmail());
-            stmtPerson.setInt(7, employerToUpdate.getId());
-            int rowsUpdated = stmtPerson.executeUpdate();
-            if (rowsUpdated == 0) {
-                connection.rollback();
+            PreparedStatement stmt = connection.prepareStatement(searchQuery);
+            stmt.setString(1, nom);
+            ResultSet result = stmt.executeQuery();
+            if (result.next()) {
+                emp.setId(result.getInt("id"));
+                emp.setNom(result.getString("nom"));
+                emp.setPrenom(result.getString("prenom"));
+                emp.setAdresseEmail(result.getString("adressemail"));
+                emp.setAdresse(result.getString("adresse"));
+                emp.setMatricule(result.getInt("matricule"));
+                emp.setNumeroTel(result.getString("numerotel"));
+                emp.setDateRecrutement(result.getDate("daterecrutement").toLocalDate());
+                emp.setDateNaissance(result.getDate("datenaissance").toLocalDate());
+                /*incomplete*/
+                return Optional.of(emp);
             }
-
-            String updateEmpQuery = "update employer set daterecrutement = ? where matricule = ? ";
-            PreparedStatement stmtEmp = connection.prepareStatement(updateEmpQuery);
-            stmtEmp.setDate(1, java.sql.Date.valueOf(employerToUpdate.getDateRecrutement()));
-            stmtEmp.setInt(2,employerToUpdate.getMatricule());
-            rowsUpdated = stmtEmp.executeUpdate();
-            if (rowsUpdated == 0) {
-                connection.rollback();
-            }
-            connection.commit();
-            //connection.close();
-            //end transaction
-            return search(employerToUpdate.getMatricule());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return Optional.empty();
     }
-
-    public List<Affectation> getAllAffectations(Employer employer) {
-        return null;
+    public Optional<Person> searchByDateNaissance(LocalDate datenaissance) {
+        Employer emp = new Employer();
+        String searchQuery = "SELECT " +
+                "  person.id, " +
+                "  person.nom, " +
+                "  person.prenom, " +
+                "  person.datenaissance, " +
+                "  person.numerotel, " +
+                "  person.adresse, " +
+                "  person.adressemail, " +
+                "  employer.matricule, " +
+                "  employer.daterecrutement," +
+                "  employer.personid " +
+                "FROM " +
+                "  person " +
+                "   INNER JOIN employer " +
+                "   ON person.id = employer.personid " +
+                "WHERE" +
+                "    person.datenaissance = ?" +
+                ";";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(searchQuery);
+            stmt.setDate(1, java.sql.Date.valueOf(datenaissance));
+            ResultSet result = stmt.executeQuery();
+            if (result.next()) {
+                emp.setId(result.getInt("id"));
+                emp.setNom(result.getString("nom"));
+                emp.setPrenom(result.getString("prenom"));
+                emp.setAdresseEmail(result.getString("adressemail"));
+                emp.setAdresse(result.getString("adresse"));
+                emp.setMatricule(result.getInt("matricule"));
+                emp.setNumeroTel(result.getString("numerotel"));
+                emp.setDateRecrutement(result.getDate("daterecrutement").toLocalDate());
+                emp.setDateNaissance(result.getDate("datenaissance").toLocalDate());
+                /*incomplete*/
+                return Optional.of(emp);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return Optional.empty();
     }
-
-    public Affectation getCurrentAffectation(Employer employer) {
-        return null;
+    public Optional<Person> searchByNumeroTel(String numeroTel) {
+        Employer emp = new Employer();
+        String searchQuery = "SELECT " +
+                "  person.id, " +
+                "  person.nom, " +
+                "  person.prenom, " +
+                "  person.datenaissance, " +
+                "  person.numerotel, " +
+                "  person.adresse, " +
+                "  person.adressemail, " +
+                "  employer.matricule, " +
+                "  employer.daterecrutement," +
+                "  employer.personid " +
+                "FROM " +
+                "  person " +
+                "   INNER JOIN employer " +
+                "   ON person.id = employer.personid " +
+                "WHERE" +
+                "    person.numerotel = ?" +
+                ";";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(searchQuery);
+            stmt.setDate(1, java.sql.Date.valueOf(numeroTel));
+            ResultSet result = stmt.executeQuery();
+            if (result.next()) {
+                emp.setId(result.getInt("id"));
+                emp.setNom(result.getString("nom"));
+                emp.setPrenom(result.getString("prenom"));
+                emp.setAdresseEmail(result.getString("adressemail"));
+                emp.setAdresse(result.getString("adresse"));
+                emp.setMatricule(result.getInt("matricule"));
+                emp.setNumeroTel(result.getString("numerotel"));
+                emp.setDateRecrutement(result.getDate("daterecrutement").toLocalDate());
+                emp.setDateNaissance(result.getDate("datenaissance").toLocalDate());
+                /*incomplete*/
+                return Optional.of(emp);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return Optional.empty();
     }
 }
