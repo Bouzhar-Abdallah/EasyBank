@@ -1,24 +1,28 @@
 package Objects;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 public class Employer extends Person{
-    private String matricule;
+    private Integer matricule;
 
-    public String getMatricule() {
+    private LocalDate dateRecrutement;
+    private List<Affectation> affectations;
+
+    public Integer getMatricule() {
         return matricule;
     }
 
-    public void setMatricule(String matricule) {
+    public void setMatricule(Integer matricule) {
         this.matricule = matricule;
     }
 
-    public Date getDateRecrutement() {
+    public LocalDate getDateRecrutement() {
         return dateRecrutement;
     }
 
-    public void setDateRecrutement(Date dateRecrutement) {
+    public void setDateRecrutement(LocalDate dateRecrutement) {
         this.dateRecrutement = dateRecrutement;
     }
 
@@ -29,7 +33,4 @@ public class Employer extends Person{
     public void setAffectations(List<Affectation> affectations) {
         this.affectations = affectations;
     }
-
-    private Date dateRecrutement;
-    private List<Affectation> affectations;
 }

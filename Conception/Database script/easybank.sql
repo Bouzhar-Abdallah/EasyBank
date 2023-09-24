@@ -1,77 +1,94 @@
-create table person(
-	id SERIAL primary key,
-	nom varchar(250) NOT NULL,
-	prenom varchar(250) NOT NULL,
-	dateNaissance Date NOT NULL,
-	numeroTel varchar(50) NOT NULL,
-	adresse varchar(250) NOT NULL,
-	adressemail varchar(250) NOT NULL
-);
-
-create table employer(
-	matricule varchar(20) primary key,
-	dateRecrutement Date NOT NULL,
-	personId int,
-	FOREIGN key (personId) REFERENCES person(id) on DELETE CASCADE on UPDATE CASCADE
-);
-create table client(
-	code varchar(20) primary key,
-	personId int,
-	FOREIGN key (personId) REFERENCES person(id) on DELETE CASCADE on UPDATE CASCADE
-);
-
-create table mission(
-	code varchar(20) primary key,
-	nom varchar(20) NOT NULL,
-	description varchar(250)
-);
-
-create table affectation(
-	employerId varchar(20),
-    FOREIGN key (employerId) REFERENCES employer(matricule) on DELETE CASCADE on UPDATE CASCADE,
-    missionId varchar(20),
-    FOREIGN key (missionId) REFERENCES mission(code) on DELETE CASCADE on UPDATE CASCADE,
-    dateDebut Date NOT NULL,
-    dateFin Date NOT NULL
-);
-
 CREATE TYPE etat_enum AS ENUM ('actif', 'suspendu', 'saisi');
+CREATE TYPE type_operation_enum AS ENUM ('versement', 'retrait', 'virement');
+
+CREATE TABLE person (
+    id SERIAL PRIMARY KEY,
+    nom VARCHAR(250) NOT NULL,
+    prenom VARCHAR(250) NOT NULL,
+    dateNaissance DATE NOT NULL,
+    numeroTel VARCHAR(50) NOT NULL,
+    adresse VARCHAR(250) NOT NULL,
+    adressemail VARCHAR(250) NOT NULL,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE employer (
+    matricule SERIAL PRIMARY KEY,
+    dateRecrutement DATE NOT NULL,
+    personId INT,
+    FOREIGN KEY (personId) REFERENCES person (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE client (
+    code SERIAL PRIMARY KEY,
+    personId INT,
+    FOREIGN KEY (personId) REFERENCES person (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE mission (
+    code SERIAL PRIMARY KEY,
+    nom VARCHAR(20) NOT NULL,
+    description VARCHAR(250),
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE affectation (
+    employerId INT,
+    FOREIGN KEY (employerId) REFERENCES employer (matricule) ON DELETE CASCADE ON UPDATE CASCADE,
+    missionId INT,
+    FOREIGN KEY (missionId) REFERENCES mission (code) ON DELETE CASCADE ON UPDATE CASCADE,
+    dateDebut DATE NOT NULL,
+    dateFin DATE NOT NULL,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 CREATE TABLE compte (
-    numero bigint PRIMARY KEY,
-    solde double precision DEFAULT(0) NOT NULL,
+    numero BIGINT PRIMARY KEY,
+    solde DOUBLE PRECISION DEFAULT (0) NOT NULL,
     dateCreation DATE NOT NULL,
     etat etat_enum,
-    employerMatricule varchar(20),
-    FOREIGN KEY (employerMatricule) REFERENCES employer(matricule) on DELETE CASCADE on UPDATE CASCADE,
-	clientCode varchar(20),
-    FOREIGN KEY (clientCode) REFERENCES client(code) on DELETE CASCADE on UPDATE CASCADE
+    employerMatricule INT,
+    FOREIGN KEY (employerMatricule) REFERENCES employer (matricule) ON DELETE CASCADE ON UPDATE CASCADE,
+    clientCode INT,
+    FOREIGN KEY (clientCode) REFERENCES client (code) ON DELETE CASCADE ON UPDATE CASCADE,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE courant (
-    numeroCompte bigint NOT NULL,
-    decouvert double precision NOT NULL,
-	compteNumero bigint,
-	FOREIGN key (compteNumero) REFERENCES compte(numero) on DELETE CASCADE on UPDATE CASCADE
+    numeroCompte BIGINT NOT NULL,
+    decouvert DOUBLE PRECISION NOT NULL,
+    compteNumero BIGINT,
+    FOREIGN KEY (compteNumero) REFERENCES compte (numero) ON DELETE CASCADE ON UPDATE CASCADE,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE epargne (
-    numeroCompte bigint NOT NULL,
-    tauxInteret numeric NOT NULL,
-	compteNumero bigint,
-	FOREIGN key (compteNumero) REFERENCES compte(numero) on DELETE CASCADE on UPDATE CASCADE
+    numeroCompte BIGINT NOT NULL,
+    tauxInteret NUMERIC NOT NULL,
+    compteNumero BIGINT,
+    FOREIGN KEY (compteNumero) REFERENCES compte (numero) ON DELETE CASCADE ON UPDATE CASCADE,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TYPE type_operation_enum AS ENUM ('versement', 'retrait', 'virement');
-
-create table operation(
-	numero bigint primary key,
-	dateOperation timestamp ,
+CREATE TABLE operation (
+    numero BIGINT PRIMARY KEY,
+    dateOperation TIMESTAMP,
     type type_operation_enum,
-	montant double precision NOT NULL,
-	employerCode varchar(20),
-    FOREIGN KEY (employerCode) REFERENCES employer(matricule) on DELETE CASCADE on UPDATE CASCADE,
-	compteNumero bigint,
-    FOREIGN KEY (compteNumero) REFERENCES compte(numero) on DELETE CASCADE on UPDATE CASCADE
+    montant DOUBLE PRECISION NOT NULL,
+    employerCode INT,
+    FOREIGN KEY (employerCode) REFERENCES employer (matricule) ON DELETE CASCADE ON UPDATE CASCADE,
+    compteNumero BIGINT,
+    FOREIGN KEY (compteNumero) REFERENCES compte (numero) ON DELETE CASCADE ON UPDATE CASCADE,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-

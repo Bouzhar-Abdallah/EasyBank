@@ -1,13 +1,17 @@
 package Objects;
 
+import javax.management.ObjectInstance;
+import java.time.LocalDate;
 import java.util.Date;
 
 public abstract class Person {
     private Integer id;
     private String nom;
     private String prenom;
-    private Date dateNaissance;
-
+    private LocalDate dateNaissance;
+    private String numeroTel;
+    private String adresse;
+    private String adresseEmail;
     public Integer getId() {
         return id;
     }
@@ -32,11 +36,11 @@ public abstract class Person {
         this.prenom = prenom;
     }
 
-    public Date getDateNaissance() {
+    public LocalDate getDateNaissance() {
         return dateNaissance;
     }
 
-    public void setDateNaissance(Date dateNaissance) {
+    public void setDateNaissance(LocalDate dateNaissance) {
         this.dateNaissance = dateNaissance;
     }
 
@@ -64,8 +68,5 @@ public abstract class Person {
         this.adresseEmail = adresseEmail;
     }
 
-    private String numeroTel;
-    private String adresse;
-    private String adresseEmail;
 
 }
