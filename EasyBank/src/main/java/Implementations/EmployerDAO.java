@@ -1,8 +1,9 @@
 package Implementations;
 
-import Objects.Affectation;
 import Objects.Employer;
+import Objects.Affectation;
 import Objects.Person;
+import Services.EmployerDAOInterface;
 import Services.PersonDAOInterface;
 import Utils.DBConnection;
 
@@ -15,13 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class EmployerDAO implements PersonDAOInterface {
-    private final Connection connection;
+public class EmployerDAO extends PersonDAO implements EmployerDAOInterface {
 
-    public EmployerDAO() {
-        connection = DBConnection.getDBConnection();
-    }
 
+
+    public EmployerDAO(){connection = DBConnection.getDBConnection();}
     @Override
     public Optional<Person> create(Person person) {
         Employer emp = (Employer) person;
@@ -105,62 +104,8 @@ public class EmployerDAO implements PersonDAOInterface {
     }
 
 
-    @Override
-    public Integer delete(Integer id) {
-        String deleteQuery = "delete from person where id = ?";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(deleteQuery);
-            stmt.setInt(1, id);
-            int affectedRows = stmt.executeUpdate();
-            if (affectedRows == 0) {
-                throw new Exception("deletion failed");
-            } else {
-                return affectedRows;
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
-    }
-
-    @Override
     public List<Person> getAll() {
-        String getAllQuery = "SELECT " +
-                "  person.id, " +
-                "  person.nom, " +
-                "  person.prenom, " +
-                "  person.datenaissance, " +
-                "  person.numerotel, " +
-                "  person.adresse, " +
-                "  person.adressemail, " +
-                "  employer.matricule, " +
-                "  employer.daterecrutement," +
-                "  employer.personid " +
-                "FROM " +
-                "  person " +
-                "   INNER JOIN employer " +
-                "   ON person.id = employer.personid ;";
-        List<Person> employees = new ArrayList<>();
-        Employer emp = new Employer();
-        try {
-            PreparedStatement stmt = connection.prepareStatement(getAllQuery);
-            ResultSet result = stmt.executeQuery();
-            while (result.next()) {
-                emp.setId(result.getInt("id"));
-                emp.setNom(result.getString("nom"));
-                emp.setPrenom(result.getString("prenom"));
-                emp.setAdresseEmail(result.getString("adressemail"));
-                emp.setAdresse(result.getString("adresse"));
-                emp.setMatricule(result.getInt("matricule"));
-                emp.setNumeroTel(result.getString("numerotel"));
-                emp.setDateRecrutement(result.getDate("daterecrutement").toLocalDate());
-                emp.setDateNaissance(result.getDate("datenaissance").toLocalDate());
-                employees.add(emp);
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return employees;
+       return getAll("employer");
     }
 
 
@@ -201,13 +146,6 @@ public class EmployerDAO implements PersonDAOInterface {
         return Optional.empty();
     }
 
-    public List<Affectation> getAllAffectations(Employer employer) {
-        return null;
-    }
-
-    public Affectation getCurrentAffectation(Employer employer) {
-        return null;
-    }
     public Optional<Person> searchByMatricule(Integer matricule) {
         Employer emp = new Employer();
         String searchQuery = "SELECT " +
@@ -250,130 +188,13 @@ public class EmployerDAO implements PersonDAOInterface {
         }
         return Optional.empty();
     }
-    public Optional<Person> searchByNom(String nom) {
-        Employer emp = new Employer();
-        String searchQuery = "SELECT " +
-                "  person.id, " +
-                "  person.nom, " +
-                "  person.prenom, " +
-                "  person.datenaissance, " +
-                "  person.numerotel, " +
-                "  person.adresse, " +
-                "  person.adressemail, " +
-                "  employer.matricule, " +
-                "  employer.daterecrutement," +
-                "  employer.personid " +
-                "FROM " +
-                "  person " +
-                "   INNER JOIN employer " +
-                "   ON person.id = employer.personid " +
-                "WHERE" +
-                "    person.nom = ?" +
-                ";";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(searchQuery);
-            stmt.setString(1, nom);
-            ResultSet result = stmt.executeQuery();
-            if (result.next()) {
-                emp.setId(result.getInt("id"));
-                emp.setNom(result.getString("nom"));
-                emp.setPrenom(result.getString("prenom"));
-                emp.setAdresseEmail(result.getString("adressemail"));
-                emp.setAdresse(result.getString("adresse"));
-                emp.setMatricule(result.getInt("matricule"));
-                emp.setNumeroTel(result.getString("numerotel"));
-                emp.setDateRecrutement(result.getDate("daterecrutement").toLocalDate());
-                emp.setDateNaissance(result.getDate("datenaissance").toLocalDate());
-                /*incomplete*/
-                return Optional.of(emp);
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return Optional.empty();
+    /* todo */
+    public List<Affectation> getAllAffectations(Employer employer) {
+        return null;
     }
-    public Optional<Person> searchByDateNaissance(LocalDate datenaissance) {
-        Employer emp = new Employer();
-        String searchQuery = "SELECT " +
-                "  person.id, " +
-                "  person.nom, " +
-                "  person.prenom, " +
-                "  person.datenaissance, " +
-                "  person.numerotel, " +
-                "  person.adresse, " +
-                "  person.adressemail, " +
-                "  employer.matricule, " +
-                "  employer.daterecrutement," +
-                "  employer.personid " +
-                "FROM " +
-                "  person " +
-                "   INNER JOIN employer " +
-                "   ON person.id = employer.personid " +
-                "WHERE" +
-                "    person.datenaissance = ?" +
-                ";";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(searchQuery);
-            stmt.setDate(1, java.sql.Date.valueOf(datenaissance));
-            ResultSet result = stmt.executeQuery();
-            if (result.next()) {
-                emp.setId(result.getInt("id"));
-                emp.setNom(result.getString("nom"));
-                emp.setPrenom(result.getString("prenom"));
-                emp.setAdresseEmail(result.getString("adressemail"));
-                emp.setAdresse(result.getString("adresse"));
-                emp.setMatricule(result.getInt("matricule"));
-                emp.setNumeroTel(result.getString("numerotel"));
-                emp.setDateRecrutement(result.getDate("daterecrutement").toLocalDate());
-                emp.setDateNaissance(result.getDate("datenaissance").toLocalDate());
-                /*incomplete*/
-                return Optional.of(emp);
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return Optional.empty();
+
+    public Affectation getCurrentAffectation(Employer employer) {
+        return null;
     }
-    public Optional<Person> searchByNumeroTel(String numeroTel) {
-        Employer emp = new Employer();
-        String searchQuery = "SELECT " +
-                "  person.id, " +
-                "  person.nom, " +
-                "  person.prenom, " +
-                "  person.datenaissance, " +
-                "  person.numerotel, " +
-                "  person.adresse, " +
-                "  person.adressemail, " +
-                "  employer.matricule, " +
-                "  employer.daterecrutement," +
-                "  employer.personid " +
-                "FROM " +
-                "  person " +
-                "   INNER JOIN employer " +
-                "   ON person.id = employer.personid " +
-                "WHERE" +
-                "    person.numerotel = ?" +
-                ";";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(searchQuery);
-            stmt.setDate(1, java.sql.Date.valueOf(numeroTel));
-            ResultSet result = stmt.executeQuery();
-            if (result.next()) {
-                emp.setId(result.getInt("id"));
-                emp.setNom(result.getString("nom"));
-                emp.setPrenom(result.getString("prenom"));
-                emp.setAdresseEmail(result.getString("adressemail"));
-                emp.setAdresse(result.getString("adresse"));
-                emp.setMatricule(result.getInt("matricule"));
-                emp.setNumeroTel(result.getString("numerotel"));
-                emp.setDateRecrutement(result.getDate("daterecrutement").toLocalDate());
-                emp.setDateNaissance(result.getDate("datenaissance").toLocalDate());
-                /*incomplete*/
-                return Optional.of(emp);
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return Optional.empty();
-    }
+
 }

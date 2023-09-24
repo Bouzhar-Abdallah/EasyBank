@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PersonDAOInterface {
-    Optional<Person> create(Person person);
     Integer delete(Integer id);
-    List<Person> getAll();
-    Optional<Person> update(Person person);
+    List<Person> getAll(String type);
+    /*Optional<Person> update(Person person);
+    Optional<Person> create(Person person);*/
 }

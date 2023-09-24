@@ -1,35 +1,32 @@
 package Manager;
 
-import Implementations.EmployerDAO;
+import Implementations.ClientDAO;
+import Objects.Client;
 import Objects.Employer;
 import Objects.Person;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Optional;
+import java.util.Scanner;
 
-public class EmployerManager {
-    private EmployerDAO employerDAO;
-
-    public EmployerManager() {
-        employerDAO = new EmployerDAO();
+public class ClientManager {
+    private ClientDAO clientDAO;
+    public ClientManager(){
+        clientDAO = new ClientDAO();
     }
-
     public void create() {
         try {
             Scanner sc = new Scanner(System.in);
-            Employer emp = new Employer();
+            Client client = new Client();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
             System.out.print("nom:");
-            emp.setPrenom(sc.nextLine());
+            client.setPrenom(sc.nextLine());
             System.out.print("prenom:");
-            emp.setNom(sc.nextLine());
+            client.setNom(sc.nextLine());
 
             while (true) {
                 System.out.print("Date de naissance(aaaa-mm-jj):");
@@ -38,7 +35,7 @@ public class EmployerManager {
                 try {
                     LocalDate inputDate = LocalDate.parse(tmp_date, formatter);
                     if (Period.between(inputDate, LocalDate.now()).getYears() >= 18) {
-                        emp.setDateNaissance(inputDate);
+                        client.setDateNaissance(inputDate);
                         break; // Exit the loop if date is valid
                     } else {
                         System.out.println("*****   INVALIDE DATE DE NAISSANCE POUR L'EMPLOYEE   *****");
@@ -49,34 +46,15 @@ public class EmployerManager {
             }
 
             System.out.print("telephone:");
-            emp.setNumeroTel(sc.nextLine());
+            client.setNumeroTel(sc.nextLine());
             System.out.print("adresse:");
-            emp.setAdresse(sc.nextLine());
+            client.setAdresse(sc.nextLine());
             System.out.print("adresseEmail:");
-            emp.setAdresseEmail(sc.nextLine());
-
-            while (true) {
-                System.out.print("date de recrutement(aaaa-mm-jj):");
-                String tmp_date = sc.nextLine();
-
-                try {
-                    LocalDate inputDate = LocalDate.parse(tmp_date, formatter);
-                    if (Period.between(inputDate, LocalDate.now()).getYears() > 0)
-                        emp.setDateRecrutement(inputDate);
-                    else
-                        throw new Exception("*****   INVALIDE DATE DE RECRUTEMENT POUR L'EMPLOYEE   *****");
-                    break;
-                } catch (java.time.format.DateTimeParseException e) {
-                    System.out.println("Format de date invalide. Veuillez utiliser le format aaaa-mm-jj.");
-                }
-            }
-            //employerDAO.create(emp);
-            /*Employer test = new Employer();
-            employerDAO.create(test);*/
-            Optional<Person> optionalEmp = employerDAO.create(emp);
-            if (optionalEmp.isPresent()) {
-                Employer createdPerson = (Employer) optionalEmp.get();
-                System.out.println(String.format("*****   AJOUT D'UN EMPLOI AVEC ID[%s] nom :[%s]  *****", createdPerson.getMatricule(), createdPerson.getNom()));
+            client.setAdresseEmail(sc.nextLine());
+            Optional<Person> optionalClient = clientDAO.create(client);
+            if (optionalClient.isPresent()) {
+                Client createdPerson = (Client) optionalClient.get();
+                System.out.println(String.format("*****   AJOUT D'UN Client AVEC Code[%d] nom :[%s]  *****", createdPerson.getCode(), createdPerson.getNom()));
             } else {
                 System.out.println("*****   Opération d'ajout d'emploi a échoué   *****");
             }
@@ -90,9 +68,9 @@ public class EmployerManager {
         Scanner sc = new Scanner(System.in);
 
         System.out.println("enter employe matricule to delete");
-        Integer matriculeTodelete = sc.nextInt();
+        Integer codeTodelete = sc.nextInt();
         sc.nextLine();
-        Optional<Person> employer = employerDAO.searchByMatricule(matriculeTodelete);
+        Optional<Person> employer = clientDAO.searchByClientCode(codeTodelete);
         if (employer.isPresent()) {
             Employer employerToDelete = (Employer) employer.get();
             //Employer createdPerson = (Employer) employerToDelete.getId();
@@ -101,7 +79,7 @@ public class EmployerManager {
             System.out.println("Press [any] to cancel delete \n");
             if (sc.nextLine().equals("y")) {
 
-                if (employerDAO.delete(employerToDelete.getId()) == 0) {
+                if (clientDAO.delete(employerToDelete.getId()) == 0) {
                     System.out.println("deletion failed");
                 } else {
                     System.out.println("employee deleted succesefully");
@@ -116,10 +94,10 @@ public class EmployerManager {
         }
     }
 
-    public void showAllEmployees() {
+    public void showAll() {
         System.out.println("All Employees:");
 
-        List<Person> employees = employerDAO.getAll();
+        List<Person> employees = clientDAO.getAll();
 
         for (Person person : employees) {
             if (person instanceof Employer) {
@@ -140,14 +118,14 @@ public class EmployerManager {
     }
 
     public void update() {
-        System.out.println("update employee\n");
+        System.out.println("update client\n");
         Scanner sc = new Scanner(System.in);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        System.out.println("enter employe matricule to update");
-        Integer matricule = sc.nextInt();
+        System.out.println("enter Client code to update");
+        Integer code = sc.nextInt();
         sc.nextLine();
-        Optional<Person> optionalEmployer = employerDAO.searchByMatricule(matricule);
+        Optional<Person> optionalEmployer = clientDAO.searchByClientCode(code);
         if (optionalEmployer.isPresent()) {
             Employer employerToUpdate = (Employer) optionalEmployer.get();
             System.out.println(String.format("*****   found employee | Matricule :[%d] | nom :[%s] |  *****", employerToUpdate.getMatricule(), employerToUpdate.getNom()));
@@ -223,7 +201,7 @@ public class EmployerManager {
                 }
             }
             /* daterecrutement*/
-            System.out.println("Date de recrutement :"+employerToUpdate.getDateRecrutement());
+/*            System.out.println("Date de recrutement :"+employerToUpdate.getDateRecrutement());
             System.out.println("update it ?");
             System.out.println("Press [y] to confirm \n");
             System.out.println("Press [any] to go next \n");
@@ -244,9 +222,9 @@ public class EmployerManager {
                         System.out.println("Format de date invalide. Veuillez utiliser le format aaaa-mm-jj.");
                     }
                 }
-            }
+            }*/
 
-            Optional<Person> updatedEmp = employerDAO.update(employerToUpdate);
+            Optional<Person> updatedEmp = clientDAO.update(employerToUpdate);
             if (updatedEmp.isPresent()){
                 System.out.println("operation est effectué avec succes");
                 return;
@@ -279,26 +257,26 @@ public class EmployerManager {
         switch (choix) {
             case 1 -> {
                 System.out.println("entrez le matricule");
-                Integer matricule = sc.nextInt();
+                Integer code = sc.nextInt();
                 sc.nextLine();
-                optionalPerson = employerDAO.searchByMatricule(matricule);
+                optionalPerson = clientDAO.searchByClientCode(code);
             }
             case 2 -> {
                 System.out.println("entrez le nom");
                 String nom = sc.nextLine();
-                optionalPerson = employerDAO.searchByNom(nom);
+                optionalPerson = clientDAO.searchByNom(nom);
             }
             case 3 -> {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 System.out.println("entrez la date de naissance");
                 String tmp_date = sc.nextLine();
                 LocalDate inputDate = LocalDate.parse(tmp_date, formatter);
-                optionalPerson = employerDAO.searchByDateNaissance(inputDate);
+                optionalPerson = clientDAO.searchByDateNaissance(inputDate);
             }
             case 4 -> {
                 System.out.println("entrez le numero de tel");
                 String numeroTel = sc.nextLine();
-                optionalPerson = employerDAO.searchByNumeroTel(numeroTel);
+                optionalPerson = clientDAO.searchByNumeroTel(numeroTel);
             }
             default -> {
             }
@@ -306,16 +284,16 @@ public class EmployerManager {
         if (optionalPerson.isPresent()){
             Employer employee = (Employer) optionalPerson.get();
 
-                System.out.println("Employee Matricule: " + employee.getMatricule());
-                System.out.println("Nom: " + employee.getNom());
-                System.out.println("Prenom: " + employee.getPrenom());
-                System.out.println("Date de Naissance: " + employee.getDateNaissance());
-                System.out.println("Numero de Telephone: " + employee.getNumeroTel());
-                System.out.println("Adresse: " + employee.getAdresse());
-                System.out.println("Adresse Email: " + employee.getAdresseEmail());
-                System.out.println("Date de Recrutement: " + employee.getDateRecrutement());
+            System.out.println("Employee Matricule: " + employee.getMatricule());
+            System.out.println("Nom: " + employee.getNom());
+            System.out.println("Prenom: " + employee.getPrenom());
+            System.out.println("Date de Naissance: " + employee.getDateNaissance());
+            System.out.println("Numero de Telephone: " + employee.getNumeroTel());
+            System.out.println("Adresse: " + employee.getAdresse());
+            System.out.println("Adresse Email: " + employee.getAdresseEmail());
+            System.out.println("Date de Recrutement: " + employee.getDateRecrutement());
 
-                System.out.println("------------------------------");
+            System.out.println("------------------------------");
 
         }else{
             System.out.println("employer not found");
@@ -323,5 +301,4 @@ public class EmployerManager {
             searchByAttribute();
         }
     }
-
 }

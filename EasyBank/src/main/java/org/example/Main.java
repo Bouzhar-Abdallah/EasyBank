@@ -1,6 +1,7 @@
 package org.example;
 
 
+import Manager.ClientManager;
 import Manager.EmployerManager;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
@@ -12,12 +13,12 @@ public class Main {
 
 
         EmployerManager empManager = new EmployerManager();
-
+        ClientManager cltManager = new ClientManager();
         //empManager.addEmployee();
         //empManager.deleteEmployee();
         //empManager.showAllEmployees();
         //empManager.updateEmployee();
-        empManager.searchByAttribute();
-
+        //empManager.searchByAttribute();
+        cltManager.create();
     }
 }
