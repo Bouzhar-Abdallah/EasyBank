@@ -22,6 +22,7 @@ public class Main {
         //cltManager.create();
         //cltManager.delete();
         //cltManager.showAll();
-        cltManager.update();
+        //cltManager.update();
+        cltManager.searchByAttribute();
     }
 }

@@ -199,38 +199,13 @@ public class ClientManager {
                     }
                 }
             }
-            /* daterecrutement*/
-/*            System.out.println("Date de recrutement :"+employerToUpdate.getDateRecrutement());
-            System.out.println("update it ?");
-            System.out.println("Press [y] to confirm \n");
-            System.out.println("Press [any] to go next \n");
-            if (sc.nextLine().equals("y")) {
-                System.out.println("entrez la nouvelle date de naissance :");
-                while (true) {
-                    System.out.print("date de recrutement(aaaa-mm-jj):");
-                    String tmp_date = sc.nextLine();
-
-                    try {
-                        LocalDate inputDate = LocalDate.parse(tmp_date, formatter);
-                        if (Period.between(inputDate, LocalDate.now()).getYears() > 0)
-                            employerToUpdate.setDateRecrutement(inputDate);
-                        else
-                            System.out.println("date de recrutement incorrecte");
-                        break;
-                    } catch (java.time.format.DateTimeParseException e) {
-                        System.out.println("Format de date invalide. Veuillez utiliser le format aaaa-mm-jj.");
-                    }
-                }
-            }*/
-
             Optional<Person> updatedEmp = clientDAO.update(clientToUpdate);
             if (updatedEmp.isPresent()){
                 System.out.println("operation est effectué avec succes");
-                return;
             }else{
                 System.out.println("l'operation a echoué");
-                return;
             }
+            return;
 
         } else {
             System.out.println("*****   employe not found   *****");
@@ -239,23 +214,19 @@ public class ClientManager {
     }
 
     public void searchByAttribute() {
-        /*Optional<Person> emp = employerDAO.search(16);
-        if (emp.isPresent()) {
-            Person person = emp.get();
 
-        }*/
         Scanner sc = new Scanner(System.in);
         System.out.println("search by :");
-        System.out.println("1 : matricule");
+        System.out.println("1 : code");
         System.out.println("2 : nom");
         System.out.println("3 : date de naissance");
         System.out.println("4 : numero de tel");
-        Integer choix = sc.nextInt();
+        int choix = sc.nextInt();
         Optional<Person> optionalPerson = Optional.empty();
         sc.nextLine();
         switch (choix) {
             case 1 -> {
-                System.out.println("entrez le matricule");
+                System.out.println("entrez le code");
                 Integer code = sc.nextInt();
                 sc.nextLine();
                 optionalPerson = clientDAO.searchByClientCode(code);
@@ -281,16 +252,16 @@ public class ClientManager {
             }
         }
         if (optionalPerson.isPresent()){
-            Employer employee = (Employer) optionalPerson.get();
+            Client client = (Client) optionalPerson.get();
 
-            System.out.println("Employee Matricule: " + employee.getMatricule());
-            System.out.println("Nom: " + employee.getNom());
-            System.out.println("Prenom: " + employee.getPrenom());
-            System.out.println("Date de Naissance: " + employee.getDateNaissance());
-            System.out.println("Numero de Telephone: " + employee.getNumeroTel());
-            System.out.println("Adresse: " + employee.getAdresse());
-            System.out.println("Adresse Email: " + employee.getAdresseEmail());
-            System.out.println("Date de Recrutement: " + employee.getDateRecrutement());
+            System.out.println("Code client: " + client.getCode());
+            System.out.println("Nom: " + client.getNom());
+            System.out.println("Prenom: " + client.getPrenom());
+            System.out.println("Date de Naissance: " + client.getDateNaissance());
+            System.out.println("Numero de Telephone: " + client.getNumeroTel());
+            System.out.println("Adresse: " + client.getAdresse());
+            System.out.println("Adresse Email: " + client.getAdresseEmail());
+
 
             System.out.println("------------------------------");
 
