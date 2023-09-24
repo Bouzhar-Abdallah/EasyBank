@@ -23,6 +23,6 @@ public class Main {
         //cltManager.delete();
         //cltManager.showAll();
         //cltManager.update();
-        cltManager.searchByAttribute();
+        //cltManager.searchByAttribute();
     }
 }
