@@ -51,19 +51,5 @@ public class EpargneManager extends Manager {
         //NEXTVAL('account_number_seq')
         System.out.println("\n \n hello");
     }
-    /*public void test(){
-        Long num = 1000000000000019L;
 
-        Optional<Compte> createdEpargne = epargneDAO.searchByNumero(num);
-        if (createdEpargne.isPresent()) {
-
-            System.out.println(
-                    createdEpargne.get().getClient().getNom()
-            );
-            System.out.println(
-                    createdEpargne.get().getEmplyer().getNom()
-            );
-            System.out.println(createdEpargne.get().getNumero());
-        }
-    }*/
 }
