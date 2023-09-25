@@ -3,7 +3,7 @@ package org.example;
 
 import Manager.ClientManager;
 import Manager.EmployerManager;
-import Manager.EpargneManager;
+import Manager.CompteManager;
 
 
 
@@ -17,7 +17,7 @@ public class Main {
 
         EmployerManager empManager = new EmployerManager();
         ClientManager cltManager = new ClientManager();
-        EpargneManager epargneManager = new EpargneManager();
+        CompteManager epargneManager = new CompteManager();
 
         //empManager.create();
         //empManager.deleteEmployee();

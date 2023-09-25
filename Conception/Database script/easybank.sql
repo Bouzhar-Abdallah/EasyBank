@@ -63,9 +63,8 @@ CREATE TABLE compte (
 );
 
 CREATE TABLE courant (
-    numeroCompte BIGINT NOT NULL,
+    compteNumero BIGINT PRIMARY KEY,
     decouvert DOUBLE PRECISION NOT NULL,
-    compteNumero BIGINT,
     FOREIGN KEY (compteNumero) REFERENCES compte (numero) ON DELETE CASCADE ON UPDATE CASCADE,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
