@@ -17,7 +17,7 @@ public class ClientManager {
     public ClientManager(){
         clientDAO = new ClientDAO();
     }
-    public void create() {
+    public Optional<Person> create() {
         try {
             Scanner sc = new Scanner(System.in);
             Client client = new Client();
@@ -59,9 +59,11 @@ public class ClientManager {
                 System.out.println("*****   Opération d'ajout d'emploi a échoué   *****");
             }
             sc.close();
+                return optionalClient ;
         } catch (Exception e) {
             System.out.println(e.getClass() + "::" + e.getMessage());
         }
+        return Optional.empty();
     }
 
     public void delete() {
