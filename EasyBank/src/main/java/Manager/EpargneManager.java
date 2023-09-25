@@ -1,23 +1,15 @@
 package Manager;
 
 import Enums.Etat_enum;
-import Implementations.ClientDAO;
-import Implementations.EmployerDAO;
-import Implementations.EpargneDAO;
-import Objects.Client;
-import Objects.Employer;
-import Objects.Epargne;
-import Objects.Person;
+import Objects.*;
 
 import java.util.Optional;
 import java.util.Scanner;
 
-public class EpargneManager {
-    private EpargneDAO epargneDAO;
-    public EpargneManager(){
-        epargneDAO = new EpargneDAO();
-    }
-    public void create(){
+public class EpargneManager extends Manager {
+
+
+    public void create() {
         Scanner sc = new Scanner(System.in);
         System.out.println("create epargne");
         System.out.println("1: nouveu client");
@@ -25,9 +17,7 @@ public class EpargneManager {
         int choix = sc.nextInt();
         sc.nextLine();
 
-        EmployerDAO employerDAO = new EmployerDAO();
-        ClientDAO clientDAO = new ClientDAO();
-        Optional<Person> employer = employerDAO.searchByMatricule(16);
+        Optional<Person> employer = employerDAO.searchByMatricule(17);
         Optional<Person> client;
         ClientManager clientManager = new ClientManager();
 
@@ -47,8 +37,33 @@ public class EpargneManager {
         employer.ifPresent(person -> epargneCompte.setEmplyer((Employer) person));
         epargneCompte.setEtat(Etat_enum.actif);
         epargneCompte.setTauxInteret(0.5);
-        epargneDAO.create(epargneCompte);
+        Optional<Compte> createdEpargne = epargneDAO.create(epargneCompte);
+        if (createdEpargne.isPresent()) {
+
+            System.out.println(
+                    createdEpargne.get().getClient().getNom()
+            );
+            System.out.println(
+                    createdEpargne.get().getEmplyer().getNom()
+            );
+            System.out.println(createdEpargne.get().getNumero());
+        }
         //NEXTVAL('account_number_seq')
         System.out.println("\n \n hello");
     }
+    /*public void test(){
+        Long num = 1000000000000019L;
+
+        Optional<Compte> createdEpargne = epargneDAO.searchByNumero(num);
+        if (createdEpargne.isPresent()) {
+
+            System.out.println(
+                    createdEpargne.get().getClient().getNom()
+            );
+            System.out.println(
+                    createdEpargne.get().getEmplyer().getNom()
+            );
+            System.out.println(createdEpargne.get().getNumero());
+        }
+    }*/
 }

@@ -20,7 +20,7 @@ public class EpargneDAO extends CompteDAO implements EpargneDAOInterface {
         Epargne epargneCompte = (Epargne) compte;
         try {
             connection.setAutoCommit(false);
-            String insertQuery = "insert into compte(numero,datecreation,etat,employermatricule,clientcode) values(NEXTVAL('account_number_seq'),CURRENT_TIMESTAMP,?::etat_enum,?,?)RETURNING numero;;";
+            String insertQuery = "INSERT INTO compte(numero, datecreation, etat, employermatricule, clientcode) VALUES (NEXTVAL('account_number_seq'), CURRENT_TIMESTAMP, ?::etat_enum, ?, ?) RETURNING numero;";
             PreparedStatement stmt = connection.prepareStatement(insertQuery);
             stmt.setString(1, Etat_enum.actif.name());
             stmt.setInt(2, compte.getEmplyer().getMatricule());
@@ -29,24 +29,30 @@ public class EpargneDAO extends CompteDAO implements EpargneDAOInterface {
             if (result.next()) {
                 long accountNumber = result.getLong("numero");
                 System.out.println("Created account with numero: " + accountNumber);
-                String insertEpargneQuery = "insert into epargne(compteNumero,tauxinteret) values(?,?);";
-                PreparedStatement stmtEpargne = connection.prepareStatement(insertEpargneQuery);
-                stmtEpargne.setLong(1,accountNumber);
-                stmtEpargne.setDouble(2,((Epargne) compte).getTauxInteret());
-                int affectedRows = stmtEpargne.executeUpdate();
-                if (affectedRows !=1) connection.commit();
-                return searchByNumero(accountNumber);
 
-            }else{
+                String insertEpargneQuery = "INSERT INTO epargne(compteNumero, tauxinteret) VALUES (?, ?);";
+                PreparedStatement stmtEpargne = connection.prepareStatement(insertEpargneQuery);
+                stmtEpargne.setLong(1, accountNumber);
+                stmtEpargne.setDouble(2, ((Epargne) compte).getTauxInteret());
+                int affectedRows = stmtEpargne.executeUpdate();
+
+                if (affectedRows != 1) {
+                    connection.rollback();
+                    return Optional.empty();
+                }
+
+                connection.commit();
+                return searchByNumero(accountNumber);
+            } else {
                 connection.rollback();
                 return Optional.empty();
             }
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return Optional.empty();
     }
+
 
     @Override
     public Optional<Compte> update(Compte compte) {
@@ -67,7 +73,7 @@ public class EpargneDAO extends CompteDAO implements EpargneDAOInterface {
                 "FROM " +
                 "  compte " +
                 "   INNER JOIN epargne " +
-                "   ON compte.numero = epargne.numero " +
+                "   ON compte.numero = epargne.comptenumero " +
                 "WHERE" +
                 "    compte.numero = ?" +
                 ";";

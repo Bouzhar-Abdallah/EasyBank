@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-public class ClientManager {
-    private ClientDAO clientDAO;
+public class ClientManager extends Manager{
+
     public ClientManager(){
         clientDAO = new ClientDAO();
     }

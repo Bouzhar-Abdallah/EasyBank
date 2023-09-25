@@ -5,6 +5,8 @@ import Manager.ClientManager;
 import Manager.EmployerManager;
 import Manager.EpargneManager;
 
+
+
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
@@ -16,7 +18,8 @@ public class Main {
         EmployerManager empManager = new EmployerManager();
         ClientManager cltManager = new ClientManager();
         EpargneManager epargneManager = new EpargneManager();
-        //empManager.addEmployee();
+
+        //empManager.create();
         //empManager.deleteEmployee();
         //empManager.showAll();
         //empManager.updateEmployee();
@@ -27,5 +30,6 @@ public class Main {
         //cltManager.update();
         //cltManager.searchByAttribute();
         epargneManager.create();
+        //epargneManager.test();
     }
 }

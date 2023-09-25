@@ -13,12 +13,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
-public class EmployerManager {
-    private EmployerDAO employerDAO;
-
-    public EmployerManager() {
-        employerDAO = new EmployerDAO();
-    }
+public class EmployerManager extends Manager{
 
     public void create() {
         try {
