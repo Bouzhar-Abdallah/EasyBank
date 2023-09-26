@@ -4,10 +4,7 @@ import Enums.Etat_enum;
 import Implementations.EpargneDAO;
 import Objects.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 public class CompteManager extends Manager {
 
@@ -146,11 +143,34 @@ public class CompteManager extends Manager {
         List<Compte> comptes = new ArrayList<>();
         comptes.addAll(epargneDAO.getAll("epargne"));
         comptes.addAll(epargneDAO.getAll("courant"));
+        Map<Compte, String> compteMap = new HashMap<>();
 
-        for (Compte compte: comptes
+
+        for (Compte compte : comptes) {
+            if (compte instanceof Epargne) {
+                compteMap.put(compte, "epargne");
+            } else if (compte instanceof Courant) {
+                compteMap.put(compte, "courant");
+            }
+        }
+        for (Map.Entry<Compte, String> entry : compteMap.entrySet()) {
+            Compte compte = entry.getKey();
+            String type = entry.getValue();
+
+            System.out.println("Type: " + type);
+
+            if ("epargne".equals(type)) {
+                System.out.println("Attribute Value: " + ((Epargne) compte).getTauxInteret());
+            } else if ("courant".equals(type)) {
+                System.out.println("Attribute Value: " + ((Courant) compte).getDecouvert());
+            }
+        }
+
+
+       /* for (Compte compte: comptes
              ) {
             System.out.println(compte.getDateCreation());
-        }
+        }*/
         System.out.println(comptes.size());
     }
 }
