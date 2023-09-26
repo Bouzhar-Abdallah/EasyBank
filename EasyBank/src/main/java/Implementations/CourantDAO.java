@@ -7,6 +7,7 @@ import Utils.DBConnection;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.List;
 import java.util.Optional;
 
 public class CourantDAO extends CompteDAO implements CourantDAOInterface {
@@ -64,6 +65,7 @@ public class CourantDAO extends CompteDAO implements CourantDAOInterface {
                 "  compte.datecreation, " +
                 "  compte.employermatricule, " +
                 "  compte.clientcode, " +
+                "  compte.etat, " +
                 "  courant.decouvert, " +
                 "  courant.comptenumero " +
                 "FROM " +
@@ -93,5 +95,8 @@ public class CourantDAO extends CompteDAO implements CourantDAOInterface {
             System.out.println(e.getMessage());
         }
         return Optional.empty();
+    }
+    public List<Compte> getAll(){
+        return getAll("courant");
     }
 }

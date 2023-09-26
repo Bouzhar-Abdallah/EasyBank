@@ -2,13 +2,14 @@ package Objects;
 
 import Enums.Etat_enum;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 public abstract class Compte {
     private Long numero;
     private Double solde;
-    private Date dateCreation;
+    private LocalDate dateCreation;
     private Etat_enum etat;
     private Client client;
     private Employer emplyer;
@@ -29,11 +30,11 @@ public abstract class Compte {
         this.solde = solde;
     }
 
-    public Date getDateCreation() {
+    public LocalDate getDateCreation() {
         return dateCreation;
     }
 
-    public void setDateCreation(Date dateCreation) {
+    public void setDateCreation(LocalDate dateCreation) {
         this.dateCreation = dateCreation;
     }
 

@@ -31,6 +31,7 @@ public class Main {
         //cltManager.searchByAttribute();
         //epargneManager.create();
         //epargneManager.test();
-        compteManager.delete();
+        //compteManager.delete();
+        compteManager.showAll();
     }
 }

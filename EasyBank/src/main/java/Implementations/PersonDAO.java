@@ -37,6 +37,35 @@ abstract class PersonDAO implements PersonDAOInterface {
 
     @Override
     public List<Person> getAll(String type) {
+        String getAllQuery = getGetAllQuery(type);
+
+
+        List<Person> persons = new ArrayList<>();
+        Employer emp = new Employer();
+        try {
+            PreparedStatement stmt = connection.prepareStatement(getAllQuery);
+            ResultSet result = stmt.executeQuery();
+            while (result.next()) {
+                emp.setId(result.getInt("id"));
+                emp.setNom(result.getString("nom"));
+                emp.setPrenom(result.getString("prenom"));
+                emp.setAdresseEmail(result.getString("adressemail"));
+                emp.setAdresse(result.getString("adresse"));
+                emp.setNumeroTel(result.getString("numerotel"));
+                emp.setDateNaissance(result.getDate("datenaissance").toLocalDate());
+                if (type.equals("employer")) {
+                    emp.setMatricule(result.getInt("matricule"));
+                    emp.setDateRecrutement(result.getDate("daterecrutement").toLocalDate());
+                }
+                persons.add(emp);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return persons;
+    }
+
+    private String getGetAllQuery(String type) {
         String getAllQuery;
         if (type.equals("employer")) {
             getAllQuery = "SELECT " +
@@ -69,31 +98,7 @@ abstract class PersonDAO implements PersonDAOInterface {
                     "   INNER JOIN client " +
                     "   ON person.id = client.personid ;";
         }
-
-
-        List<Person> persons = new ArrayList<>();
-        Employer emp = new Employer();
-        try {
-            PreparedStatement stmt = connection.prepareStatement(getAllQuery);
-            ResultSet result = stmt.executeQuery();
-            while (result.next()) {
-                emp.setId(result.getInt("id"));
-                emp.setNom(result.getString("nom"));
-                emp.setPrenom(result.getString("prenom"));
-                emp.setAdresseEmail(result.getString("adressemail"));
-                emp.setAdresse(result.getString("adresse"));
-                emp.setNumeroTel(result.getString("numerotel"));
-                emp.setDateNaissance(result.getDate("datenaissance").toLocalDate());
-                if (type.equals("employer")) {
-                    emp.setMatricule(result.getInt("matricule"));
-                    emp.setDateRecrutement(result.getDate("daterecrutement").toLocalDate());
-                }
-                persons.add(emp);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return persons;
+        return getAllQuery;
     }
 
 

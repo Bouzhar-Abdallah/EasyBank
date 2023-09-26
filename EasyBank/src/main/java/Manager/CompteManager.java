@@ -4,6 +4,8 @@ import Enums.Etat_enum;
 import Implementations.EpargneDAO;
 import Objects.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -139,5 +141,16 @@ public class CompteManager extends Manager {
             }
         }
 
+    }
+    public void showAll(){
+        List<Compte> comptes = new ArrayList<>();
+        comptes.addAll(epargneDAO.getAll("epargne"));
+        comptes.addAll(epargneDAO.getAll("courant"));
+
+        for (Compte compte: comptes
+             ) {
+            System.out.println(compte.getDateCreation());
+        }
+        System.out.println(comptes.size());
     }
 }

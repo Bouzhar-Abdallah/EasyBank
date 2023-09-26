@@ -8,6 +8,7 @@ import Utils.DBConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 public class EpargneDAO extends CompteDAO implements EpargneDAOInterface {
@@ -97,5 +98,8 @@ public class EpargneDAO extends CompteDAO implements EpargneDAOInterface {
             System.out.println(e.getMessage());
         }
         return Optional.empty();
+    }
+    public List<Compte> getAll(){
+        return getAll("epargne");
     }
 }

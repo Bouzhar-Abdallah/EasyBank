@@ -103,11 +103,9 @@ public class EmployerDAO extends PersonDAO implements EmployerDAOInterface {
 
     }
 
-
     public List<Person> getAll() {
        return getAll("employer");
     }
-
 
     @Override
     public Optional<Person> update(Person person) {
