@@ -1,6 +1,7 @@
 package Manager;
 
 import Enums.Etat_enum;
+import Implementations.EpargneDAO;
 import Objects.*;
 
 import java.util.Optional;
@@ -88,5 +89,55 @@ public class CompteManager extends Manager {
         //NEXTVAL('account_number_seq')
         System.out.println("\n \n courant compte est cree");
     }
+    /* doing */
+    public void delete() {
+        Scanner sc = new Scanner(System.in);
 
+        System.out.println("enter le numero de compte a supprimer");
+        long numero = sc.nextLong();
+        sc.nextLine();
+        Optional<Compte> compteEp = epargneDAO.searchByNumero(numero);
+        Optional<Compte> compteCo = courantDAO.searchByNumero(numero);
+        if (compteEp.isEmpty() && compteCo.isEmpty()){
+            System.out.println("aucun compte n'est trouvé");
+            delete();
+        }else{
+            if (compteEp.isPresent()) {
+                Epargne epargneToDElete = (Epargne) compteEp.get();
+
+                System.out.printf("*****   compte epargne trouvé num[%d]   *****%n", epargneToDElete.getNumero());
+                System.out.println("Press [y] to confirm delete \n");
+                System.out.println("Press [any] to cancel delete \n");
+                if (sc.nextLine().equals("y")) {
+
+                    if (epargneDAO.delete(epargneToDElete.getNumero()) == 0) {
+                        System.out.println("deletion failed");
+                    } else {
+                        System.out.println("account deleted succesefully");
+                    }
+                } else {
+                    System.out.flush();
+                    delete();
+                }
+            } else {
+                Courant courantToDElete = (Courant) compteCo.get();
+
+                System.out.printf("*****   compte courant trouvé num[%d]   *****%n", courantToDElete.getNumero());
+                System.out.println("Press [y] to confirm delete \n");
+                System.out.println("Press [any] to cancel delete \n");
+                if (sc.nextLine().equals("y")) {
+
+                    if (epargneDAO.delete(courantToDElete.getNumero()) == 0) {
+                        System.out.println("deletion failed");
+                    } else {
+                        System.out.println("account deleted succesefully");
+                    }
+                } else {
+                    System.out.flush();
+                    delete();
+                }
+            }
+        }
+
+    }
 }

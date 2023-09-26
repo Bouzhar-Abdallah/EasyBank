@@ -17,7 +17,7 @@ public class Main {
 
         EmployerManager empManager = new EmployerManager();
         ClientManager cltManager = new ClientManager();
-        CompteManager epargneManager = new CompteManager();
+        CompteManager compteManager = new CompteManager();
 
         //empManager.create();
         //empManager.deleteEmployee();
@@ -29,7 +29,8 @@ public class Main {
         //cltManager.showAll();
         //cltManager.update();
         //cltManager.searchByAttribute();
-        epargneManager.create();
+        //epargneManager.create();
         //epargneManager.test();
+        compteManager.delete();
     }
 }
