@@ -29,9 +29,11 @@ public class Main {
         //cltManager.showAll();
         //cltManager.update();
         //cltManager.searchByAttribute();
-        //epargneManager.create();
-        //epargneManager.test();
+        //compteManager.create();
+        //compteManager.showAll();
         //compteManager.delete();
-        compteManager.showAll();
+
+        compteManager.updateAccountStatus();
+        //epargneManager.test();
     }
 }

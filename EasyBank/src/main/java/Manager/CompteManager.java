@@ -4,6 +4,7 @@ import Enums.Etat_enum;
 import Implementations.EpargneDAO;
 import Objects.*;
 
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class CompteManager extends Manager {
@@ -20,10 +21,10 @@ public class CompteManager extends Manager {
 
         Optional<Person> client;
 
-        if (choix == 1){
+        if (choix == 1) {
             //nouveu client
             client = clientManager.create();
-        }else{
+        } else {
             // client deja existant
             System.out.println("entrez le code du client");
             int code = sc.nextInt();
@@ -36,14 +37,15 @@ public class CompteManager extends Manager {
         int choix2 = sc.nextInt();
         sc.nextLine();
 
-        if (choix2 == 1){
+        if (choix2 == 1) {
             createEpargne(client);
-        }else{
+        } else {
             createCourant(client);
         }
 
     }
-    public void createEpargne(Optional<Person> client){
+
+    public void createEpargne(Optional<Person> client) {
         Optional<Person> employer = employerDAO.searchByMatricule(17);
         //client = clientDAO.searchByClientCode(1);
         Epargne epargneCompte = new Epargne();
@@ -65,7 +67,8 @@ public class CompteManager extends Manager {
         //NEXTVAL('account_number_seq')
         System.out.println("\n \n hello");
     }
-    public void createCourant(Optional<Person> client){
+
+    public void createCourant(Optional<Person> client) {
         Optional<Person> employer = employerDAO.searchByMatricule(17);
         //client = clientDAO.searchByClientCode(1);
 
@@ -88,6 +91,7 @@ public class CompteManager extends Manager {
         //NEXTVAL('account_number_seq')
         System.out.println("\n \n courant compte est cree");
     }
+
     /* doing */
     public void delete() {
         Scanner sc = new Scanner(System.in);
@@ -97,10 +101,10 @@ public class CompteManager extends Manager {
         sc.nextLine();
         Optional<Compte> compteEp = epargneDAO.searchByNumero(numero);
         Optional<Compte> compteCo = courantDAO.searchByNumero(numero);
-        if (compteEp.isEmpty() && compteCo.isEmpty()){
+        if (compteEp.isEmpty() && compteCo.isEmpty()) {
             System.out.println("aucun compte n'est trouvé");
             delete();
-        }else{
+        } else {
             if (compteEp.isPresent()) {
                 Epargne epargneToDElete = (Epargne) compteEp.get();
 
@@ -139,7 +143,8 @@ public class CompteManager extends Manager {
         }
 
     }
-    public void showAll(){
+
+    public void showAll() {
         List<Compte> comptes = new ArrayList<>();
         comptes.addAll(epargneDAO.getAll("epargne"));
         comptes.addAll(epargneDAO.getAll("courant"));
@@ -172,5 +177,36 @@ public class CompteManager extends Manager {
             System.out.println(compte.getDateCreation());
         }*/
         System.out.println(comptes.size());
+    }
+
+    public void updateAccountStatus() {
+        System.out.println("update compte\n");
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("enter account number to update");
+        long numeroCompte = sc.nextLong();
+
+        sc.nextLine();
+        Optional<Compte> compte = compteDAO.findByNumero(numeroCompte);
+        if (compte.isPresent()) {
+
+            System.out.println("pick new status");
+            for (Etat_enum status : Etat_enum.values()
+            ) {
+                System.out.println(status.ordinal() + " :" + status.name());
+            }
+            int choix = sc.nextInt();
+            switch (choix) {
+                case 0 -> compte.get().setEtat(Etat_enum.valueOf("actif"));
+                case 1 -> compte.get().setEtat(Etat_enum.valueOf("suspendu"));
+                case 2 -> compte.get().setEtat(Etat_enum.valueOf("saisi"));
+            }
+            if (compteDAO.updateStatus(compte.get())>0){
+                System.out.println("updated succesefully");
+            }
+        }else{
+            System.out.println("ce numero de compte n'existe pas");
+        }
+        //compte.ifPresent(value -> System.out.println(value.getEtat()));
     }
 }

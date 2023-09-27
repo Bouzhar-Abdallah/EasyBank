@@ -3,6 +3,7 @@ package Implementations;
 import Enums.Etat_enum;
 import Objects.*;
 import Services.CompteDAOInterface;
+import Utils.DBConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,7 +15,9 @@ import java.util.Optional;
 
 public class CompteDAO implements CompteDAOInterface {
     protected Connection connection;
-
+    public CompteDAO() {
+        connection = DBConnection.getDBConnection();
+    }
     @Override
     public Integer delete(Long numero) {
         String deleteQuery = "delete from compte where numero = ?";
@@ -37,11 +40,11 @@ public class CompteDAO implements CompteDAOInterface {
     public List<Compte> getAll(String type) {
         String getAllQuery = getGetAllQuery(type);
         List<Compte> comptes = new ArrayList<>();
-        if (type.equals("courant")){
-            try{
+        if (type.equals("courant")) {
+            try {
                 PreparedStatement stmt = connection.prepareStatement(getAllQuery);
                 ResultSet result = stmt.executeQuery();
-                while(result.next()){
+                while (result.next()) {
                     Courant compte = new Courant();
                     compte.setNumero(result.getLong("numero"));
                     compte.setSolde(result.getDouble("solde"));
@@ -58,10 +61,10 @@ public class CompteDAO implements CompteDAOInterface {
                     compte.setEtat(etat);
                     comptes.add(compte);
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-        }else{
+        } else {
             try {
                 PreparedStatement stmt = connection.prepareStatement(getAllQuery);
                 ResultSet result = stmt.executeQuery();
@@ -95,6 +98,7 @@ public class CompteDAO implements CompteDAOInterface {
         }
         return comptes;
     }
+
     private String getGetAllQuery(String type) {
         String getAllQuery;
         if (type.equals("epargne")) {
@@ -127,5 +131,75 @@ public class CompteDAO implements CompteDAOInterface {
                     "   ON compte.numero = courant.comptenumero ;";
         }
         return getAllQuery;
+    }
+
+    public Optional<Compte> findByNumero(Long numero) {
+
+        String Query = "SELECT " +
+                "    c.*, " +
+                "    CASE WHEN cr.compteNumero IS NOT NULL THEN 'courant' ELSE 'epargne' END AS ACCOUNT_TYPE, " +
+                "    cr.decouvert AS DECOUVERT, " +
+                "    ep.tauxInteret AS TAUXINTERET " +
+                "FROM compte c " +
+                "LEFT JOIN courant cr ON c.numero = cr.compteNumero " +
+                "LEFT JOIN epargne ep ON c.numero = ep.compteNumero " +
+                "where numero = ?; ";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(Query);
+            stmt.setLong(1,numero);
+            ResultSet result = stmt.executeQuery();
+            if (result.next()){
+                if (result.getString("ACCOUNT_TYPE").equals("courant")){
+                    Courant courant = new Courant();
+                    courant.setNumero(result.getLong("numero"));
+                    courant.setDecouvert(result.getDouble("decouvert"));
+
+                    String etatValue = result.getString("etat");
+                    Etat_enum etat = Etat_enum.valueOf(etatValue);
+                    courant.setEtat(etat);
+                    courant.setSolde(result.getDouble("solde"));
+                    courant.setDateCreation(result.getDate("datecreation").toLocalDate());
+                    Employer emp = new Employer();
+                    emp.setMatricule(result.getInt("employermatricule"));
+                    Client clt = new Client();
+                    clt.setCode(result.getInt("clientcode"));
+                    courant.setClient(clt);
+                    courant.setEmplyer(emp);
+                    return Optional.of(courant);
+
+                }else{
+                    Epargne epargne = new Epargne();
+                    epargne.setNumero(result.getLong("numero"));
+                    epargne.setTauxInteret(result.getDouble("tauxinteret"));
+                    String etatValue = result.getString("etat");
+                    Etat_enum etat = Etat_enum.valueOf(etatValue);
+                    epargne.setEtat(etat);
+                    epargne.setSolde(result.getDouble("solde"));
+                    epargne.setDateCreation(result.getDate("datecreation").toLocalDate());
+                    Employer emp = new Employer();
+                    emp.setMatricule(result.getInt("employermatricule"));
+                    Client clt = new Client();
+                    clt.setCode(result.getInt("clientcode"));
+                    epargne.setClient(clt);
+                    epargne.setEmplyer(emp);
+                    return Optional.of(epargne);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    return Optional.empty();
+    }
+    public Integer updateStatus(Compte compte){
+        String Query = "update compte set etat = ?::etat_enum where numero = ?";
+        try{
+            PreparedStatement stmt = connection.prepareStatement(Query);
+            stmt.setString(1,compte.getEtat().name());
+            stmt.setLong(2,compte.getNumero());
+            return  stmt.executeUpdate();
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return 0;
     }
 }
