@@ -9,7 +9,7 @@ import java.util.*;
 
 public class CompteManager extends Manager {
 
-
+    private Scanner sc = new Scanner(System.in);
     public void create() {
         Scanner sc = new Scanner(System.in);
         ClientManager clientManager = new ClientManager();
@@ -180,8 +180,7 @@ public class CompteManager extends Manager {
     }
 
     public void updateAccountStatus() {
-        System.out.println("update compte\n");
-        Scanner sc = new Scanner(System.in);
+        System.out.println("update compte status\n");
 
         System.out.println("enter account number to update");
         long numeroCompte = sc.nextLong();
@@ -208,5 +207,94 @@ public class CompteManager extends Manager {
             System.out.println("ce numero de compte n'existe pas");
         }
         //compte.ifPresent(value -> System.out.println(value.getEtat()));
+    }
+    public void updateAccount() {
+        System.out.println("update compte\n");
+
+        System.out.println("enter account number to update");
+        long numeroCompte = sc.nextLong();
+
+        sc.nextLine();
+        Optional<Compte> compte = compteDAO.findByNumero(numeroCompte);
+        if (compte.isPresent()) {
+            System.out.println("compte trouvé");
+            System.out.println("numero :"+ compte.get().getNumero());
+            System.out.println("choisir une operation");
+            System.out.println("1: update numero");
+            System.out.println("2: update solde");
+            System.out.println("3: update client");
+            System.out.println("4: update employer");
+            if (compte.get() instanceof Epargne) System.out.println("5: update taux d'interet");
+            else System.out.println("5: update decouvert");
+
+            int choix = sc.nextInt();
+            switch (choix) {
+                case 1 -> updateNumero(compte.get());
+                case 2 -> updateSolde(compte.get());
+                case 3 -> updateClient(compte.get());
+                case 4 -> updateEmployer(compte.get());
+                case 5 -> {
+                    if (compte.get() instanceof Epargne) updateTauxInteret(compte.get());
+                    else updateDecouvert(compte.get());
+                }
+            }
+            /*if (compteDAO.updateStatus(compte.get())>0){
+                System.out.println("updated succesefully");
+            }*/
+        }else{
+            System.out.println("ce numero de compte n'existe pas");
+        }
+
+    }
+
+    public void updateSolde(Compte compte){
+        System.out.println("untrez le nouveu solde");
+        compte.setSolde(sc.nextDouble());
+        if (compteDAO.updateSolde(compte) > 0){
+            System.out.println("solde updated succesfully");
+        }else{
+
+            System.out.println("une erreur est servenu");
+        }
+    }
+    public void updateNumero(Compte compte){
+        System.out.println("untrez le nouveu numero");
+        compte.setNumero(sc.nextLong());
+        if (compteDAO.updateNumero(compte) > 0){
+            System.out.println("solde updated succesfully");
+        }else{
+            System.out.println("une erreur est servenu");
+        }
+    }
+    public void updateClient(Compte compte){
+        System.out.println("untrez le code du nouveu client");
+        /*todo later*/
+
+    }
+    public void updateEmployer(Compte compte){
+        System.out.println("untrez le matricule du nouveu employer");
+        /*todo later*/
+    }
+    public void updateDecouvert(Compte compte){
+        System.out.println("untrez le nouveu decouvert");
+        Courant crt = (Courant) compte;
+        System.out.println("decouvert : " + crt.getDecouvert());
+        crt.setDecouvert(sc.nextDouble());
+        if (compteDAO.updateDecouvert(crt) > 0){
+            System.out.println("decouvert updated succesfully");
+        }else{
+            System.out.println("une erreur est servenu");
+        }
+    }
+    public void updateTauxInteret(Compte compte){
+        System.out.println("untrez le nouveu taux d'interet");
+        Epargne epargne = (Epargne) compte;
+        System.out.println("taux d'interet : " + epargne.getTauxInteret());
+        epargne.setTauxInteret(sc.nextDouble());
+        if (compteDAO.updateTauxInteret(epargne) > 0){
+            System.out.println("decouvert updated succesfully");
+        }else{
+            System.out.println("une erreur est servenu");
+        }
     }
 }

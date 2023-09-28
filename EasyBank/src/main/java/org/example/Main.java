@@ -33,7 +33,7 @@ public class Main {
         //compteManager.showAll();
         //compteManager.delete();
 
-        compteManager.updateAccountStatus();
-        //epargneManager.test();
+        //compteManager.updateAccountStatus();
+        compteManager.updateAccount();
     }
 }

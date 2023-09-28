@@ -199,7 +199,56 @@ public class CompteDAO implements CompteDAOInterface {
             return  stmt.executeUpdate();
         }catch(SQLException e){
             System.out.println(e.getMessage());
+            return 0;
         }
+    }
+    public Integer updateSolde(Compte compte){
+        String Query = "update compte set solde = ? where numero = ?";
+        try{
+            PreparedStatement stmt = connection.prepareStatement(Query);
+            stmt.setDouble(1,compte.getSolde());
+            stmt.setLong(2,compte.getNumero());
+            return  stmt.executeUpdate();
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+            return 0;
+        }
+    }
+    public Integer updateNumero(Compte compte){
+        String Query = "update compte set numero = ? where numero = ?";
+        try{
+            PreparedStatement stmt = connection.prepareStatement(Query);
+            stmt.setLong(1,compte.getNumero());
+            stmt.setLong(2,compte.getNumero());
+            return  stmt.executeUpdate();
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
         return 0;
+        }
+    }
+    public Integer updateDecouvert(Courant courant){
+        String Query = "update courant set decouvert = ? where comptenumero = ?";
+        try{
+            PreparedStatement stmt = connection.prepareStatement(Query);
+            stmt.setDouble(1,courant.getDecouvert());
+            stmt.setLong(2,courant.getNumero());
+            return stmt.executeUpdate();
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+            return 0;
+        }
+    }
+    public Integer updateTauxInteret(Epargne epargne){
+        String Query = "update epargne set tauxinteret = ? where comptenumero = ?";
+        try{
+            PreparedStatement stmt = connection.prepareStatement(Query);
+            stmt.setDouble(1,epargne.getTauxInteret());
+            stmt.setLong(2,epargne.getNumero());
+            int count = stmt.executeUpdate();
+            return  stmt.executeUpdate();
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+            return 0;
+        }
     }
 }
