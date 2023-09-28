@@ -4,6 +4,8 @@ import Enums.Etat_enum;
 import Implementations.EpargneDAO;
 import Objects.*;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -327,4 +329,30 @@ public class CompteManager extends Manager {
             System.out.println(compte.getNumero());
         }
     }
+
+    public void searchByCreationDate() {
+        List<Compte> comptes = new ArrayList<>();
+        System.out.println("creationDate");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        boolean validDateEntered = false;
+
+        while (!validDateEntered) {
+            System.out.print("entrez la date sous la forme (aaaa-mm-jj):");
+            String tmp_date = sc.nextLine();
+
+            try {
+                LocalDate inputDate = LocalDate.parse(tmp_date, formatter);
+                comptes = compteDAO.findByDateCreation(inputDate);
+                for (Compte compte: comptes
+                ) {
+                    System.out.println(compte.getNumero());
+                }
+                validDateEntered = true;
+            } catch (java.time.format.DateTimeParseException e) {
+                System.out.println("Format de date invalide. Veuillez utiliser le format aaaa-mm-jj.");
+            }
+        }
+    }
+
 }

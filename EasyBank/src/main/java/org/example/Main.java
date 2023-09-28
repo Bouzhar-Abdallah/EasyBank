@@ -36,6 +36,7 @@ public class Main {
         //compteManager.updateAccountStatus();
         //compteManager.updateAccount();
         //compteManager.searchByClient();
-        compteManager.searchAccountByStatus();
+        //compteManager.searchAccountByStatus();
+        compteManager.searchByCreationDate();
     }
 }

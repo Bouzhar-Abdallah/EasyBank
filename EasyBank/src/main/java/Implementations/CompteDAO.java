@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -323,6 +324,64 @@ public class CompteDAO implements CompteDAOInterface {
             PreparedStatement stmt = connection.prepareStatement(Query);
 
             stmt.setString(1,status);
+            ResultSet result = stmt.executeQuery();
+            while (result.next()){
+                if (result.getString("ACCOUNT_TYPE").equals("courant")){
+                    Courant courant = new Courant();
+                    courant.setNumero(result.getLong("numero"));
+                    courant.setDecouvert(result.getDouble("decouvert"));
+
+                    String etatValue = result.getString("etat");
+                    Etat_enum etat = Etat_enum.valueOf(etatValue);
+                    courant.setEtat(etat);
+                    courant.setSolde(result.getDouble("solde"));
+                    courant.setDateCreation(result.getDate("datecreation").toLocalDate());
+                    Employer emp = new Employer();
+                    emp.setMatricule(result.getInt("employermatricule"));
+                    Client clt = new Client();
+                    clt.setCode(result.getInt("clientcode"));
+                    courant.setClient(clt);
+                    courant.setEmplyer(emp);
+                    comptes.add(courant);
+
+                }else{
+                    Epargne epargne = new Epargne();
+                    epargne.setNumero(result.getLong("numero"));
+                    epargne.setTauxInteret(result.getDouble("tauxinteret"));
+                    String etatValue = result.getString("etat");
+                    Etat_enum etat = Etat_enum.valueOf(etatValue);
+                    epargne.setEtat(etat);
+                    epargne.setSolde(result.getDouble("solde"));
+                    epargne.setDateCreation(result.getDate("datecreation").toLocalDate());
+                    Employer emp = new Employer();
+                    emp.setMatricule(result.getInt("employermatricule"));
+                    Client clt = new Client();
+                    clt.setCode(result.getInt("clientcode"));
+                    epargne.setClient(clt);
+                    epargne.setEmplyer(emp);
+                    comptes.add(epargne);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return comptes;
+    }
+    public  List<Compte> findByDateCreation(LocalDate Date){
+        List<Compte> comptes = new ArrayList<>();
+        String Query = "SELECT " +
+                "    c.*, " +
+                "    CASE WHEN cr.compteNumero IS NOT NULL THEN 'courant' ELSE 'epargne' END AS ACCOUNT_TYPE, " +
+                "    cr.decouvert AS DECOUVERT, " +
+                "    ep.tauxInteret AS TAUXINTERET " +
+                "FROM compte c " +
+                "LEFT JOIN courant cr ON c.numero = cr.compteNumero " +
+                "LEFT JOIN epargne ep ON c.numero = ep.compteNumero " +
+                "where c.datecreation = ?; ";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(Query);
+            java.sql.Date creationDate = java.sql.Date.valueOf(Date);
+            stmt.setDate(1,creationDate);
             ResultSet result = stmt.executeQuery();
             while (result.next()){
                 if (result.getString("ACCOUNT_TYPE").equals("courant")){
