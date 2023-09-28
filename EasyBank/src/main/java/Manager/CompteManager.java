@@ -297,4 +297,15 @@ public class CompteManager extends Manager {
             System.out.println("une erreur est servenu");
         }
     }
+    public void test(){
+        System.out.println("enter Client code serach with");
+        Integer code = sc.nextInt();
+        sc.nextLine();
+        Optional<Person> optionalClient = clientDAO.searchByClientCode(code);
+        List<Compte> comptes = compteDAO.findByClient((Client) optionalClient.get());
+        for (Compte compte: comptes
+             ) {
+            System.out.println(compte.getNumero());
+        }
+    }
 }

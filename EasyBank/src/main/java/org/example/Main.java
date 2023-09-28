@@ -34,6 +34,7 @@ public class Main {
         //compteManager.delete();
 
         //compteManager.updateAccountStatus();
-        compteManager.updateAccount();
+        //compteManager.updateAccount();
+        compteManager.test();
     }
 }

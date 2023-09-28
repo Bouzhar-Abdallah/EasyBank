@@ -251,4 +251,61 @@ public class CompteDAO implements CompteDAOInterface {
             return 0;
         }
     }
+    public List<Compte> findByClient(Client client){
+        String Query = "SELECT " +
+                "    c.*, " +
+                "    CASE WHEN cr.compteNumero IS NOT NULL THEN 'courant' ELSE 'epargne' END AS ACCOUNT_TYPE, " +
+                "    cr.decouvert AS DECOUVERT, " +
+                "    ep.tauxInteret AS TAUXINTERET " +
+                "FROM compte c " +
+                "LEFT JOIN courant cr ON c.numero = cr.compteNumero " +
+                "LEFT JOIN epargne ep ON c.numero = ep.compteNumero " +
+                "where clientcode = ?; ";
+        List<Compte> comptes = new ArrayList<>();
+        try {
+            PreparedStatement stmt = connection.prepareStatement(Query);
+            stmt.setInt(1,client.getCode());
+            ResultSet result = stmt.executeQuery();
+            while (result.next()){
+                if (result.getString("ACCOUNT_TYPE").equals("courant")){
+                    Courant courant = new Courant();
+                    courant.setNumero(result.getLong("numero"));
+                    courant.setDecouvert(result.getDouble("decouvert"));
+
+                    String etatValue = result.getString("etat");
+                    Etat_enum etat = Etat_enum.valueOf(etatValue);
+                    courant.setEtat(etat);
+                    courant.setSolde(result.getDouble("solde"));
+                    courant.setDateCreation(result.getDate("datecreation").toLocalDate());
+                    Employer emp = new Employer();
+                    emp.setMatricule(result.getInt("employermatricule"));
+                    Client clt = new Client();
+                    clt.setCode(result.getInt("clientcode"));
+                    courant.setClient(clt);
+                    courant.setEmplyer(emp);
+                    comptes.add(courant);
+
+                }else{
+                    Epargne epargne = new Epargne();
+                    epargne.setNumero(result.getLong("numero"));
+                    epargne.setTauxInteret(result.getDouble("tauxinteret"));
+                    String etatValue = result.getString("etat");
+                    Etat_enum etat = Etat_enum.valueOf(etatValue);
+                    epargne.setEtat(etat);
+                    epargne.setSolde(result.getDouble("solde"));
+                    epargne.setDateCreation(result.getDate("datecreation").toLocalDate());
+                    Employer emp = new Employer();
+                    emp.setMatricule(result.getInt("employermatricule"));
+                    Client clt = new Client();
+                    clt.setCode(result.getInt("clientcode"));
+                    epargne.setClient(clt);
+                    epargne.setEmplyer(emp);
+                    comptes.add(epargne);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return comptes;
+    }
 }
