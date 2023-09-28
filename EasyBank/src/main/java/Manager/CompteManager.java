@@ -308,4 +308,23 @@ public class CompteManager extends Manager {
             System.out.println(compte.getNumero());
         }*/
     }
+    public void searchAccountByStatus(){
+        System.out.println("select status");
+        for (Etat_enum etat: Etat_enum.values()
+             ) {
+            System.out.println(etat.ordinal() +" : "+ etat.name());
+        }
+        int choix = sc.nextInt();
+        String etat = "actif";
+        switch (choix) {
+            case 0 -> etat ="actif";
+            case 1 -> etat ="suspendu";
+            case 2 -> etat ="saisi";
+        }
+        List<Compte> comptes = compteDAO.findByStatus(etat);
+        for (Compte compte: comptes
+             ) {
+            System.out.println(compte.getNumero());
+        }
+    }
 }

@@ -35,6 +35,7 @@ public class Main {
 
         //compteManager.updateAccountStatus();
         //compteManager.updateAccount();
-        compteManager.test();
+        //compteManager.searchByClient();
+        compteManager.searchAccountByStatus();
     }
 }
