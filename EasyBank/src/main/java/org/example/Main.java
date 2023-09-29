@@ -40,6 +40,7 @@ public class Main {
         //operationManager.create();
         //operationManager.delete();
         //missionManager.create();
-        missionManager.showMissions();
+        //missionManager.showMissions();
+        missionManager.delete();
     }
 }

@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface MissionDAOInterface {
     Optional<Mission> create(Mission mission);
-    Integer delete(Mission mission);
+    Integer delete(Integer code);
 }

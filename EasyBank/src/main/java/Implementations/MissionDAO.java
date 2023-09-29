@@ -36,8 +36,16 @@ public class MissionDAO implements MissionDAOInterface {
     }
 
     @Override
-    public Integer delete(Mission mission) {
-        return null;
+    public Integer delete(Integer code) {
+        String query = "delete from mission where code = ?;";
+        try{
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setInt(1,code);
+            return stmt.executeUpdate();
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return 0;
     }
     public List<Mission> getAllMissions(){
         List<Mission> missions = new ArrayList<>();
