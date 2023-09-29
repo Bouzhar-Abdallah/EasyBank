@@ -1,7 +1,11 @@
 package org.example;
 
 
+import Manager.ClientManager;
 import Manager.EmployerManager;
+import Manager.CompteManager;
+
+
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
@@ -12,12 +16,27 @@ public class Main {
 
 
         EmployerManager empManager = new EmployerManager();
+        ClientManager cltManager = new ClientManager();
+        CompteManager compteManager = new CompteManager();
 
-        //empManager.addEmployee();
+        //empManager.create();
         //empManager.deleteEmployee();
-        //empManager.showAllEmployees();
+        //empManager.showAll();
         //empManager.updateEmployee();
-        empManager.searchByAttribute();
+        //empManager.searchByAttribute();
+        //cltManager.create();
+        //cltManager.delete();
+        //cltManager.showAll();
+        //cltManager.update();
+        //cltManager.searchByAttribute();
+        //compteManager.create();
+        //compteManager.showAll();
+        //compteManager.delete();
 
+        //compteManager.updateAccountStatus();
+        //compteManager.updateAccount();
+        //compteManager.searchByClient();
+        //compteManager.searchAccountByStatus();
+        compteManager.searchByCreationDate();
     }
 }

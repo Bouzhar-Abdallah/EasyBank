@@ -3,15 +3,26 @@ package Objects;
 import javax.management.ObjectInstance;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 public abstract class Person {
-    private Integer id;
-    private String nom;
-    private String prenom;
-    private LocalDate dateNaissance;
-    private String numeroTel;
-    private String adresse;
-    private String adresseEmail;
+    protected Integer id;
+    protected String nom;
+    protected String prenom;
+    protected LocalDate dateNaissance;
+    protected String numeroTel;
+    protected String adresse;
+    protected String adresseEmail;
+    protected List<Compte> comptes;
+
+    public List<Compte> getComptes() {
+        return comptes;
+    }
+
+    public void setComptes(List<Compte> comptes) {
+        this.comptes = comptes;
+    }
+
     public Integer getId() {
         return id;
     }
