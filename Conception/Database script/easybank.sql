@@ -96,3 +96,43 @@ CREATE SEQUENCE account_number_seq
     MINVALUE 1000000000000000
     MAXVALUE 9999999999999999
     CYCLE;
+
+-- Create an AFTER INSERT trigger for "versement" operations
+-- Create a PL/pgSQL function for "versement" operations
+CREATE OR REPLACE FUNCTION update_compte_solde_versement()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Update compte.solde by adding operation.montant
+    UPDATE compte
+    SET solde = solde + NEW.montant
+    WHERE numero = NEW.compteNumero;
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create a PL/pgSQL function for "retrait" operations
+CREATE OR REPLACE FUNCTION update_compte_solde_retrait()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Update compte.solde by subtracting operation.montant
+    UPDATE compte
+    SET solde = solde - NEW.montant
+    WHERE numero = NEW.compteNumero;
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create an AFTER INSERT trigger for "versement" operations
+CREATE TRIGGER update_compte_solde_versement_trigger
+AFTER INSERT ON operation
+FOR EACH ROW
+WHEN (NEW.type = 'versement')
+EXECUTE FUNCTION update_compte_solde_versement();
+
+-- Create an AFTER INSERT trigger for "retrait" operations
+CREATE TRIGGER update_compte_solde_retrait_trigger
+AFTER INSERT ON operation
+FOR EACH ROW
+WHEN (NEW.type = 'retrait')
+EXECUTE FUNCTION update_compte_solde_retrait();
+ 
