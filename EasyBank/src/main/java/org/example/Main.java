@@ -4,7 +4,8 @@ package org.example;
 import Manager.ClientManager;
 import Manager.EmployerManager;
 import Manager.CompteManager;
-
+import Manager.OperationManager;
+import Objects.Operation;
 
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
@@ -18,7 +19,7 @@ public class Main {
         EmployerManager empManager = new EmployerManager();
         ClientManager cltManager = new ClientManager();
         CompteManager compteManager = new CompteManager();
-
+        OperationManager operationManager = new OperationManager();
         //empManager.create();
         //empManager.deleteEmployee();
         //empManager.showAll();
@@ -37,6 +38,7 @@ public class Main {
         //compteManager.updateAccount();
         //compteManager.searchByClient();
         //compteManager.searchAccountByStatus();
-        compteManager.searchByCreationDate();
+        //compteManager.searchByCreationDate();
+        operationManager.create();
     }
 }
