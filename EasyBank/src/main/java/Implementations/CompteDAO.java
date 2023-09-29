@@ -377,7 +377,7 @@ public class CompteDAO implements CompteDAOInterface {
                 "FROM compte c " +
                 "LEFT JOIN courant cr ON c.numero = cr.compteNumero " +
                 "LEFT JOIN epargne ep ON c.numero = ep.compteNumero " +
-                "where c.datecreation = ?; ";
+                "where c.datecreation >= ?; ";
         try {
             PreparedStatement stmt = connection.prepareStatement(Query);
             java.sql.Date creationDate = java.sql.Date.valueOf(Date);
