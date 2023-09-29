@@ -39,6 +39,7 @@ public class Main {
         //compteManager.searchByCreationDate();
         //operationManager.create();
         //operationManager.delete();
-        missionManager.create();
+        //missionManager.create();
+        missionManager.showMissions();
     }
 }

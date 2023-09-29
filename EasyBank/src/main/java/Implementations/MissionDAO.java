@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class MissionDAO implements MissionDAOInterface {
@@ -36,5 +38,24 @@ public class MissionDAO implements MissionDAOInterface {
     @Override
     public Integer delete(Mission mission) {
         return null;
+    }
+    public List<Mission> getAllMissions(){
+        List<Mission> missions = new ArrayList<>();
+        String query = "select * from mission";
+        try{
+            PreparedStatement stmt = connection.prepareStatement(query);
+            ResultSet results = stmt.executeQuery();
+            while (results.next()){
+                Mission mission = new Mission();
+                mission.setCode(results.getInt("code"));
+                mission.setNom(results.getString("nom"));
+                mission.setDescription(results.getString("description"));
+                missions.add(mission);
+            }
+            return missions;
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return missions;
     }
 }

@@ -2,6 +2,7 @@ package Manager;
 
 import Objects.Mission;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -18,5 +19,15 @@ public class MissionManager extends Manager{
         Optional<Mission> createdMission = missionDAO.create(mission);
         if (createdMission.isPresent()) System.out.println("created succesefully");
         else System.out.println("error happened");
+    }
+    public void showMissions(){
+        System.out.println("missions :");
+        List<Mission> missions = missionDAO.getAllMissions();
+
+        for (Mission mission: missions
+             ) {
+            System.out.println(mission.getCode() +" : "+ mission.getNom());
+            System.out.println("   description : "+ mission.getDescription());
+        }
     }
 }
