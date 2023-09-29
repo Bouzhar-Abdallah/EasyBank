@@ -8,4 +8,5 @@ public abstract class Manager {
     protected CompteDAO compteDAO = new CompteDAO();
     protected EpargneDAO epargneDAO = new EpargneDAO();
     protected CourantDAO courantDAO = new CourantDAO();
+    protected OperationDAO operationDAO = new OperationDAO();
 }
