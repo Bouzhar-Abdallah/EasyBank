@@ -39,6 +39,7 @@ public class Main {
         //compteManager.searchByClient();
         //compteManager.searchAccountByStatus();
         //compteManager.searchByCreationDate();
-        operationManager.create();
+        //operationManager.create();
+        operationManager.delete();
     }
 }

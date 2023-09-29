@@ -2,11 +2,12 @@ package Objects;
 
 import Enums.Type_operation_enum;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Operation {
     private Long numero;
-    private Date dateOperation;
+    private LocalDate dateOperation;
     private Float montant;
     private Type_operation_enum type;
     private Employer employer;
@@ -20,11 +21,11 @@ public class Operation {
         this.numero = numero;
     }
 
-    public Date getDateOperation() {
+    public LocalDate getDateOperation() {
         return dateOperation;
     }
 
-    public void setDateOperation(Date dateOperation) {
+    public void setDateOperation(LocalDate dateOperation) {
         this.dateOperation = dateOperation;
     }
 

@@ -16,6 +16,7 @@ public class OperationManager extends Manager {
     }
 
     private String operationType;
+    private Operation operation;
     private Compte compte;
     private Employer employer;
     private Scanner sc = new Scanner(System.in);
@@ -29,7 +30,24 @@ public class OperationManager extends Manager {
             case "virement" -> virement();
         }
     }
+    public void delete(){
 
+        while (operation == null){
+            System.out.println("entrez numero d'operation");
+            long numeroOperation = sc.nextLong();
+         Optional<Operation> op =   operationDAO.findByNumero(numeroOperation);
+         if (op.isPresent()){
+             operation = op.get();
+             if (operationDAO.delete(operation) >0){
+                 System.out.println("deleted");
+             }else{
+                 System.out.println("error happened");
+             }
+         }else {
+             System.out.println("not found");
+         }
+        }
+    }
     public void setOperationType() {
         System.out.println("choisissez un type d'operation");
         for (Type_operation_enum type : Type_operation_enum.values()
