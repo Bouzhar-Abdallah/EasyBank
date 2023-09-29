@@ -5,6 +5,7 @@ import Enums.Type_operation_enum;
 import Objects.Compte;
 import Objects.Employer;
 import Objects.Operation;
+import org.postgresql.gss.GSSOutputStream;
 
 import java.util.Optional;
 import java.util.Scanner;
@@ -43,6 +44,20 @@ public class OperationManager extends Manager {
              }else{
                  System.out.println("error happened");
              }
+         }else {
+             System.out.println("not found");
+         }
+        }
+    }    public void search(){
+
+        while (operation == null){
+            System.out.println("entrez numero d'operation");
+            long numeroOperation = sc.nextLong();
+         Optional<Operation> op =   operationDAO.findByNumero(numeroOperation);
+         if (op.isPresent()){
+             operation = op.get();
+             System.out.println("found");
+             System.out.println("numero : "+operation.getNumero());
          }else {
              System.out.println("not found");
          }
