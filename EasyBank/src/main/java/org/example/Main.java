@@ -1,10 +1,7 @@
 package org.example;
 
 
-import Manager.ClientManager;
-import Manager.EmployerManager;
-import Manager.CompteManager;
-import Manager.OperationManager;
+import Manager.*;
 import Objects.Operation;
 
 
@@ -20,6 +17,7 @@ public class Main {
         ClientManager cltManager = new ClientManager();
         CompteManager compteManager = new CompteManager();
         OperationManager operationManager = new OperationManager();
+        MissionManager missionManager = new MissionManager();
         //empManager.create();
         //empManager.deleteEmployee();
         //empManager.showAll();
@@ -40,6 +38,7 @@ public class Main {
         //compteManager.searchAccountByStatus();
         //compteManager.searchByCreationDate();
         //operationManager.create();
-        operationManager.delete();
+        //operationManager.delete();
+        missionManager.create();
     }
 }

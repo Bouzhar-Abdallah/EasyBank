@@ -58,7 +58,6 @@ public class OperationManager extends Manager {
              operation = op.get();
              System.out.println("found");
              System.out.println("numero : "+operation.getNumero());
-             
          }else {
              System.out.println("not found");
          }
