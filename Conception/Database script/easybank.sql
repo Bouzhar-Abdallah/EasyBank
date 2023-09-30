@@ -44,7 +44,7 @@ CREATE TABLE affectation (
     missionId INT,
     FOREIGN KEY (missionId) REFERENCES mission (code) ON DELETE CASCADE ON UPDATE CASCADE,
     dateDebut DATE NOT NULL,
-    dateFin DATE NOT NULL,
+    dateFin DATE Null,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

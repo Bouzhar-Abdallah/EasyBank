@@ -18,6 +18,7 @@ public class Main {
         CompteManager compteManager = new CompteManager();
         OperationManager operationManager = new OperationManager();
         MissionManager missionManager = new MissionManager();
+        AffectationManager affectationManager = new AffectationManager();
         //empManager.create();
         //empManager.deleteEmployee();
         //empManager.showAll();
@@ -41,6 +42,7 @@ public class Main {
         //operationManager.delete();
         //missionManager.create();
         //missionManager.showMissions();
-        missionManager.delete();
+        //missionManager.delete();
+        affectationManager.create();
     }
 }

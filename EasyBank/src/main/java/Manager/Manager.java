@@ -12,5 +12,5 @@ public abstract class Manager {
     protected CourantDAO courantDAO = new CourantDAO();
     protected OperationDAO operationDAO = new OperationDAO();
     protected MissionDAO missionDAO = new MissionDAO();
-
+    protected AffectationDAO affectationDAO = new AffectationDAO();
 }
