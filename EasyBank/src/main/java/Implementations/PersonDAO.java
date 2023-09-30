@@ -41,11 +41,11 @@ abstract class PersonDAO implements PersonDAOInterface {
 
 
         List<Person> persons = new ArrayList<>();
-        Employer emp = new Employer();
         try {
             PreparedStatement stmt = connection.prepareStatement(getAllQuery);
             ResultSet result = stmt.executeQuery();
             while (result.next()) {
+                Employer emp = new Employer();
                 emp.setId(result.getInt("id"));
                 emp.setNom(result.getString("nom"));
                 emp.setPrenom(result.getString("prenom"));

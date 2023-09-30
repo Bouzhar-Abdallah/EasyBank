@@ -1,45 +1,254 @@
 package org.example;
 
 
-import Manager.ClientManager;
-import Manager.EmployerManager;
-import Manager.CompteManager;
-import Manager.OperationManager;
+import Manager.*;
 import Objects.Operation;
+
+import java.util.Scanner;
 
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
-    public static void main(String[] args) {
-        // Press Opt+Enter with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-
-
+    private static void handleEmployeeMenu() {
         EmployerManager empManager = new EmployerManager();
-        ClientManager cltManager = new ClientManager();
-        CompteManager compteManager = new CompteManager();
-        OperationManager operationManager = new OperationManager();
-        //empManager.create();
-        //empManager.deleteEmployee();
-        //empManager.showAll();
-        //empManager.updateEmployee();
-        //empManager.searchByAttribute();
-        //cltManager.create();
-        //cltManager.delete();
-        //cltManager.showAll();
-        //cltManager.update();
-        //cltManager.searchByAttribute();
-        //compteManager.create();
-        //compteManager.showAll();
-        //compteManager.delete();
+        Scanner scanner = new Scanner(System.in);
+        int choice;
 
-        //compteManager.updateAccountStatus();
-        //compteManager.updateAccount();
-        //compteManager.searchByClient();
-        //compteManager.searchAccountByStatus();
-        //compteManager.searchByCreationDate();
-        //operationManager.create();
-        operationManager.delete();
+        do {
+            // Affichez le menu des employés
+            System.out.println("Menu Employés:");
+            System.out.println("1. Ajouter un employé");
+            System.out.println("2. Supprimer un employé");
+            System.out.println("3. Rechercher un employé");
+            System.out.println("4. Mettre à jour un employé");
+            System.out.println("5. Rechercher des employés par attributs");
+            System.out.println("0. Retour au menu principal");
+            System.out.print("Votre choix : ");
+
+            // Lisez le choix de l'utilisateur
+            choice = scanner.nextInt();
+            //scanner.nextLine(); // Lire la nouvelle ligne après le nombre
+
+            switch (choice) {
+                case 1 -> empManager.create();
+                case 2 -> empManager.delete();
+                case 3 -> empManager.searchByAttribute();
+                case 4 -> empManager.update();
+                case 0 -> System.out.println("Retour au menu principal.");
+                default -> System.out.println("Choix invalide. Réessayez.");
+            }
+        } while (choice != 0);
+    }
+
+    private static void handleClientMenu() {
+        ClientManager cltManager = new ClientManager();
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+        do {
+            // Affichez le menu des clients
+            System.out.println("Menu Clients:");
+            System.out.println("1. Ajouter un client");
+            System.out.println("2. Supprimer un client");
+            System.out.println("3. Rechercher des clients par attributs");
+            System.out.println("4. List des client");
+            System.out.println("5. Mettre à jour un client");
+            /*System.out.println("6. Obtenir les comptes d'un client");*/
+            System.out.println("0. Retour au menu principal");
+            System.out.print("Votre choix : ");
+
+
+            choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1 -> cltManager.create();
+                case 2 -> cltManager.delete();
+                case 3 -> cltManager.searchByAttribute();
+                case 4 -> cltManager.showAll();
+                case 5 -> cltManager.update();
+
+                /*case 6:
+                    cltManager.getClientAccount();
+                    break;*/
+                case 0 -> System.out.println("Retour au menu principal.");
+                default -> System.out.println("Choix invalide. Réessayez.");
+            }
+        } while (choice != 0);
+    }
+
+    private static void handleAccountMenu() {
+        CompteManager compteManager = new CompteManager();
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("Menu Comptes:");
+            System.out.println("1. Ajouter un compte");
+            System.out.println("2. Supprimer un compte");
+            System.out.println("3. Mettre à jour le statuts d'un compte");
+            System.out.println("4. Obtenir la liste des comptes");
+            System.out.println("5. Mettre à jour un compte");
+            System.out.println("6. recherche des comptes par statut");
+            System.out.println("7. recherche des comptes par client");
+            System.out.println("8. recherche des comptes par date de création");
+            System.out.println("0. Retour au menu principal");
+            System.out.print("Votre choix : ");
+
+            choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1 -> compteManager.create();
+                case 2 -> compteManager.delete();
+                case 3 -> compteManager.updateAccountStatus();
+                case 4 -> compteManager.showAll();
+                case 5 -> compteManager.updateAccount();
+                case 6 -> compteManager.searchAccountByStatus();
+                case 7 -> compteManager.searchByClient();
+                case 8 -> compteManager.searchByCreationDate();
+                case 0 -> System.out.println("Retour au menu principal.");
+                default -> System.out.println("Choix invalide. Réessayez.");
+            }
+        } while (choice != 0);
+    }
+
+    private static void handleOperationMenu() {
+        OperationManager operationManager = new OperationManager();
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("Menu Operation:");
+            System.out.println("1. Ajouter une operation");
+            System.out.println("2. Supprimer une operation");
+            //System.out.println("3. Rechercher une operation par nombre");
+            System.out.println("0. Retour au menu principal");
+            System.out.print("Votre choix : ");
+
+            choice = scanner.nextInt();
+            //operationManager.create();
+            //operationManager.delete();
+            switch (choice) {
+                case 1 -> operationManager.create();
+                case 2 -> operationManager.delete();
+                case 0 -> System.out.println("Retour au menu principal.");
+                default -> System.out.println("Choix invalide. Réessayez.");
+            }
+        } while (choice != 0);
+
+    }
+
+    private static void handleMissionMenu() {
+        MissionManager missionManager = new MissionManager();
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("Menu Operation:");
+            System.out.println("1. Ajouter une mission");
+            System.out.println("2. Supprimer une mission");
+            System.out.println("3. Afficher tous les missions");
+            System.out.println("0. Retour au menu principal");
+            System.out.print("Votre choix : ");
+            choice = Integer.parseInt(scanner.nextLine());
+            switch (choice) {
+                case 1 -> missionManager.create();
+                case 2 -> missionManager.delete();
+                case 3 -> missionManager.showMissions();
+                case 0 -> System.out.println("Retour au menu principal.");
+                default -> System.out.println("Choix invalide. Réessayez.");
+            }
+        } while (choice != 0);
+    }
+
+    private static void handleAffectationMenu() {
+        AffectationManager affectationManager = new AffectationManager();
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+        do {
+            // Affichez le menu des clients
+            System.out.println("Menu Operation:");
+            System.out.println("1. Ajouter une affectation");
+            System.out.println("2. Supprimer une affectation");
+            System.out.println("3. Afficher tous les missions");
+            System.out.println("4. Statistiques");
+            System.out.println("0. Retour au menu principal");
+            System.out.print("Votre choix : ");
+
+            choice = Integer.parseInt(scanner.nextLine());
+
+            switch (choice) {
+                case 1:
+                    affectationManager.create();
+                    break;
+                case 2:
+            affectationManager.deleteAffectation();
+                    break;
+                case 3:
+                    affectationManager.showEmployerAffectations();
+                    break;
+                case 4:
+                    affectationManager.showAffectationsStats();
+                    break;
+                case 0:
+                    System.out.println("Retour au menu principal.");
+                    break;
+                default:
+                    System.out.println("Choix invalide. Réessayez.");
+            }
+        } while (choice != 0);
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        int choice;
+        do {
+            // Affichez le menu
+            System.out.println("Menu:");
+            System.out.println("1. Gérer les employés");
+            System.out.println("2. Gérer les clients");
+            System.out.println("3. Gérer les comptes");
+            System.out.println("4. Gérer les opérations");
+            System.out.println("5. Gérer les missions");
+            System.out.println("6. Gérer les affectations");
+            System.out.println("0. Quitter");
+            System.out.print("Votre choix : ");
+
+            choice = sc.nextInt();
+            sc.nextLine();
+
+            switch (choice) {
+                case 1:
+                    handleEmployeeMenu();
+                    break;
+                case 2:
+                    handleClientMenu();
+                    break;
+                case 3:
+                    handleAccountMenu();
+                    break;
+                case 4:
+                    handleOperationMenu();
+                    break;
+                case 5:
+                    handleMissionMenu();
+                    break;
+                case 6:
+                    handleAffectationMenu();
+                    break;
+                case 0:
+                    System.out.println("Au revoir !");
+                    break;
+                default:
+                    System.out.println("Choix invalide. Réessayez.");
+            }
+        } while (choice != 0);
+
+        sc.close();
+
+
     }
 }
