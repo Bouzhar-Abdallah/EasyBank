@@ -134,5 +134,8 @@ public class AffectationManager extends Manager {
             System.out.println("error happened");
         }
     }
+    public void showAffectationsStats(){
+        System.out.println("stats");
+    }
 
 }
