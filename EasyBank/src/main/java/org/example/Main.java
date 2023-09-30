@@ -43,6 +43,7 @@ public class Main {
         //missionManager.create();
         //missionManager.showMissions();
         //missionManager.delete();
-        affectationManager.create();
+        //affectationManager.create();
+        affectationManager.showEmployerAffectations();
     }
 }

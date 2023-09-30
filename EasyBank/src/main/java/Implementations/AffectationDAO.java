@@ -1,12 +1,17 @@
 package Implementations;
 
 import Objects.Affectation;
+import Objects.Employer;
+import Objects.Mission;
 import Services.AffectationDAOInterface;
 import Utils.DBConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class AffectationDAO implements AffectationDAOInterface {
@@ -34,5 +39,36 @@ public class AffectationDAO implements AffectationDAOInterface {
     @Override
     public Integer delete(Integer employerID, Integer missionId) {
         return null;
+    }
+    public List<Affectation> getEmployerAffectations(Employer employer){
+        MissionDAO missionDAO = new MissionDAO();
+        String query = "select * from affectation where employerId = ? ORDER BY dateDebut DESC";
+        List<Affectation> affectations = new ArrayList<>();
+        try{
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setInt(1,employer.getMatricule());
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()){
+                Affectation aff = new Affectation();
+                aff.setEmployer(employer);
+                java.sql.Date dateDebutSql = resultSet.getDate("dateDebut");
+                if (dateDebutSql != null) {
+                    aff.setDateDebut(dateDebutSql.toLocalDate());
+                }
+                java.sql.Date dateFinSql = resultSet.getDate("dateFin");
+                if (dateFinSql != null) {
+                    aff.setDateFin(dateFinSql.toLocalDate());
+                }
+                Optional<Mission> optMission = missionDAO.getMissionById(resultSet.getInt("missionId"));
+                if (optMission.isPresent()){
+                    aff.setMission(optMission.get());
+                }
+                affectations.add(aff);
+            }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+
+    return affectations;
     }
 }

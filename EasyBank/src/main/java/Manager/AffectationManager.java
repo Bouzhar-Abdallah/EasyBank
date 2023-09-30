@@ -91,6 +91,18 @@ public class AffectationManager extends Manager {
         System.out.println("Code mission non trouvé.");
         return null;
     }
+    public void showEmployerAffectations(){
+        System.out.println("select employer by Mat");
+        Employer employer = null;
+        while (employer == null) {
+            employer = pickEmployer();
+        }
+        List<Affectation> affectations = affectationDAO.getEmployerAffectations(employer);
+        for (Affectation aff: affectations
+             ) {
+            System.out.println(aff.getMission().getNom()+" - "+aff.getEmployer().getNom() +" - start: "+ aff.getDateDebut() +" - end: "+ aff.getDateFin());
+        }
+    }
 
 
 
