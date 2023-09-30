@@ -44,6 +44,7 @@ public class Main {
         //missionManager.showMissions();
         //missionManager.delete();
         //affectationManager.create();
-        affectationManager.showEmployerAffectations();
+        //affectationManager.showEmployerAffectations();
+        affectationManager.deleteAffectation();
     }
 }

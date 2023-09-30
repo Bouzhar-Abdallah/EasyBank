@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,5 +71,20 @@ public class AffectationDAO implements AffectationDAOInterface {
         }
 
     return affectations;
+    }
+    public Integer delete(Affectation affectation){
+        String query = "delete from affectation where employerId = ? AND missionId = ? AND dateDebut = ? ";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setInt(1, affectation.getEmployer().getMatricule());
+            stmt.setInt(2, affectation.getMission().getCode());
+            stmt.setDate(3, java.sql.Date.valueOf(affectation.getDateDebut()));
+
+            return stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
     }
 }

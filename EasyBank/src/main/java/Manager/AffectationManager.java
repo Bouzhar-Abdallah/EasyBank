@@ -91,7 +91,7 @@ public class AffectationManager extends Manager {
         System.out.println("Code mission non trouvé.");
         return null;
     }
-    public void showEmployerAffectations(){
+    public List<Affectation> showEmployerAffectations(){
         System.out.println("select employer by Mat");
         Employer employer = null;
         while (employer == null) {
@@ -102,8 +102,37 @@ public class AffectationManager extends Manager {
              ) {
             System.out.println(aff.getMission().getNom()+" - "+aff.getEmployer().getNom() +" - start: "+ aff.getDateDebut() +" - end: "+ aff.getDateFin());
         }
+        return affectations;
     }
+    public Affectation pickAffectation(){
+        List<Affectation> affectations = showEmployerAffectations();
+        System.out.println("Choisir l'affectation à supprimer :");
 
+        for (int i = 0; i < affectations.size(); i++) {
+            Affectation aff = affectations.get(i);
+            System.out.println((i + 1) + ". " + aff.getMission().getNom() + " - " + aff.getEmployer().getNom() + " - start: " + aff.getDateDebut() + " - end: " + aff.getDateFin());
+        }
 
+        int choice = sc.nextInt();
+
+        if (choice >= 1 && choice <= affectations.size()) {
+            return affectations.get(choice - 1);
+        } else {
+            System.out.println("Choix invalide.");
+            return null;
+        }
+    }
+    public void deleteAffectation(){
+
+        Affectation affectation = null;
+        while (affectation == null){
+            affectation = pickAffectation();
+        }
+        if (affectationDAO.delete(affectation) > 0){
+            System.out.println("deleted sucussefully");
+        }else {
+            System.out.println("error happened");
+        }
+    }
 
 }
