@@ -5,6 +5,7 @@ import Enums.Type_operation_enum;
 import Objects.Compte;
 import Objects.Employer;
 import Objects.Operation;
+import org.example.Main;
 import org.postgresql.gss.GSSOutputStream;
 
 import java.util.Optional;
@@ -13,7 +14,7 @@ import java.util.Scanner;
 public class OperationManager extends Manager {
     /*temp*/
     public OperationManager() {
-        employer = (Employer) employerDAO.searchByMatricule(16).get();
+        employer = Main.getExecutingEmployee();
     }
 
     private String operationType;
@@ -48,7 +49,8 @@ public class OperationManager extends Manager {
              System.out.println("not found");
          }
         }
-    }    public void search(){
+    }
+    public void search(){
 
         while (operation == null){
             System.out.println("entrez numero d'operation");

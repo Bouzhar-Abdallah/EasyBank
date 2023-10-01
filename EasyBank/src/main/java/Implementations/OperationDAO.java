@@ -34,14 +34,13 @@ public class OperationDAO implements OperationsInterface {
 
     @Override
     public Optional<Operation> create(Operation operation) {
-        String query = "INSERT INTO operation(numero,type,employercode,comptenumero,montant,dateoperation) VALUES(?,?::type_operation_enum,?,?,?,CURRENT_TIMESTAMP);";
+        String query = "INSERT INTO operation(numero,type,employercode,comptenumero,montant,dateoperation) VALUES(NEXTVAL('operation_number_seq'),?::type_operation_enum,?,?,?,CURRENT_TIMESTAMP);";
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setLong(1,9854352394342134L);
-            stmt.setString(2,operation.getType().name());
-            stmt.setInt(3,operation.getEmployer().getMatricule());
-            stmt.setLong(4,operation.getCompte().getNumero());
-            stmt.setFloat(5,operation.getMontant());
+            stmt.setString(1,operation.getType().name());
+            stmt.setInt(2,operation.getEmployer().getMatricule());
+            stmt.setLong(3,operation.getCompte().getNumero());
+            stmt.setFloat(4,operation.getMontant());
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());

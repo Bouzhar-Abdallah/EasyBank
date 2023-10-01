@@ -3,6 +3,7 @@ package Manager;
 import Enums.Etat_enum;
 import Implementations.EpargneDAO;
 import Objects.*;
+import org.example.Main;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -12,6 +13,7 @@ import java.util.*;
 public class CompteManager extends Manager {
 
     private Scanner sc = new Scanner(System.in);
+
     public void create() {
         Scanner sc = new Scanner(System.in);
         ClientManager clientManager = new ClientManager();
@@ -48,47 +50,45 @@ public class CompteManager extends Manager {
     }
 
     public void createEpargne(Optional<Person> client) {
-        Optional<Person> employer = employerDAO.searchByMatricule(17);
+        Employer executingEmployee = Main.getExecutingEmployee();
+
         //client = clientDAO.searchByClientCode(1);
         Epargne epargneCompte = new Epargne();
         client.ifPresent(person -> epargneCompte.setClient((Client) person));
-        employer.ifPresent(person -> epargneCompte.setEmplyer((Employer) person));
+        epargneCompte.setEmplyer(executingEmployee);
+
         epargneCompte.setEtat(Etat_enum.actif);
         epargneCompte.setTauxInteret(0.5);
         Optional<Compte> createdEpargne = epargneDAO.create(epargneCompte);
         if (createdEpargne.isPresent()) {
 
+            System.out.println("compte epargne crée avec success. Numero : " + createdEpargne.get().getNumero());
             System.out.println(
-                    createdEpargne.get().getClient().getNom()
+                    "pour le client" + createdEpargne.get().getClient().getNom() + " " + createdEpargne.get().getClient().getPrenom()
             );
-            System.out.println(
-                    createdEpargne.get().getEmplyer().getNom()
-            );
-            System.out.println(createdEpargne.get().getNumero());
+
         }
         //NEXTVAL('account_number_seq')
         System.out.println("\n \n hello");
     }
 
     public void createCourant(Optional<Person> client) {
-        Optional<Person> employer = employerDAO.searchByMatricule(17);
+        Employer executingEmployee = Main.getExecutingEmployee();
         //client = clientDAO.searchByClientCode(1);
 
         Courant courantcompte = new Courant();
         client.ifPresent(person -> courantcompte.setClient((Client) person));
-        employer.ifPresent(person -> courantcompte.setEmplyer((Employer) person));
+        courantcompte.setEmplyer(executingEmployee);
+        //employer.ifPresent(person -> courantcompte.setEmplyer((Employer) person));
         courantcompte.setEtat(Etat_enum.actif);
         courantcompte.setDecouvert(5000.00);
         Optional<Compte> createdCourant = courantDAO.create(courantcompte);
         if (createdCourant.isPresent()) {
 
+            System.out.println("compte courant crée avec success. Numero : " + createdCourant.get().getNumero());
             System.out.println(
-                    createdCourant.get().getClient().getNom()
+                    "pour le client" + createdCourant.get().getClient().getNom() + " " + createdCourant.get().getClient().getPrenom()
             );
-            System.out.println(
-                    createdCourant.get().getEmplyer().getNom()
-            );
-            System.out.println(createdCourant.get().getNumero());
         }
         //NEXTVAL('account_number_seq')
         System.out.println("\n \n courant compte est cree");
@@ -152,7 +152,7 @@ public class CompteManager extends Manager {
         comptes.addAll(epargneDAO.getAll("courant"));
         Map<Compte, String> compteMap = new HashMap<>();
 
-
+        System.out.println("__________________");
         for (Compte compte : comptes) {
             if (compte instanceof Epargne) {
                 compteMap.put(compte, "epargne");
@@ -165,20 +165,17 @@ public class CompteManager extends Manager {
             String type = entry.getValue();
 
             System.out.println("Type: " + type);
-
             if ("epargne".equals(type)) {
-                System.out.println("Attribute Value: " + ((Epargne) compte).getTauxInteret());
+                System.out.println("numero de compte: " + ((Epargne) compte).getNumero());
+                System.out.println("solde: " + ((Epargne) compte).getSolde());
+                System.out.println("client: " + ((Epargne) compte).getClient().getNom());
             } else if ("courant".equals(type)) {
-                System.out.println("Attribute Value: " + ((Courant) compte).getDecouvert());
+                System.out.println("numero de compte: " + ((Courant) compte).getNumero());
+                System.out.println("solde: " + ((Courant) compte).getSolde());
+                System.out.println("client: " + ((Courant) compte).getClient().getNom());
             }
+            System.out.println("\n__________________");
         }
-
-
-       /* for (Compte compte: comptes
-             ) {
-            System.out.println(compte.getDateCreation());
-        }*/
-        System.out.println(comptes.size());
     }
 
     public void updateAccountStatus() {
@@ -202,14 +199,15 @@ public class CompteManager extends Manager {
                 case 1 -> compte.get().setEtat(Etat_enum.valueOf("suspendu"));
                 case 2 -> compte.get().setEtat(Etat_enum.valueOf("saisi"));
             }
-            if (compteDAO.updateStatus(compte.get())>0){
+            if (compteDAO.updateStatus(compte.get()) > 0) {
                 System.out.println("updated succesefully");
             }
-        }else{
+        } else {
             System.out.println("ce numero de compte n'existe pas");
         }
         //compte.ifPresent(value -> System.out.println(value.getEtat()));
     }
+
     public void updateAccount() {
         System.out.println("update compte\n");
 
@@ -220,7 +218,7 @@ public class CompteManager extends Manager {
         Optional<Compte> compte = compteDAO.findByNumero(numeroCompte);
         if (compte.isPresent()) {
             System.out.println("compte trouvé");
-            System.out.println("numero :"+ compte.get().getNumero());
+            System.out.println("numero :" + compte.get().getNumero());
             System.out.println("choisir une operation");
             System.out.println("1: update numero");
             System.out.println("2: update solde");
@@ -243,63 +241,69 @@ public class CompteManager extends Manager {
             /*if (compteDAO.updateStatus(compte.get())>0){
                 System.out.println("updated succesefully");
             }*/
-        }else{
+        } else {
             System.out.println("ce numero de compte n'existe pas");
         }
 
     }
 
-    public void updateSolde(Compte compte){
+    public void updateSolde(Compte compte) {
         System.out.println("untrez le nouveu solde");
         compte.setSolde(sc.nextDouble());
-        if (compteDAO.updateSolde(compte) > 0){
+        if (compteDAO.updateSolde(compte) > 0) {
             System.out.println("solde updated succesfully");
-        }else{
+        } else {
 
             System.out.println("une erreur est servenu");
         }
     }
-    public void updateNumero(Compte compte){
+
+    public void updateNumero(Compte compte) {
         System.out.println("untrez le nouveu numero");
         compte.setNumero(sc.nextLong());
-        if (compteDAO.updateNumero(compte) > 0){
+        if (compteDAO.updateNumero(compte) > 0) {
             System.out.println("solde updated succesfully");
-        }else{
+        } else {
             System.out.println("une erreur est servenu");
         }
     }
-    public void updateClient(Compte compte){
+
+    public void updateClient(Compte compte) {
         System.out.println("untrez le code du nouveu client");
         /*todo later*/
 
     }
-    public void updateEmployer(Compte compte){
+
+    public void updateEmployer(Compte compte) {
         System.out.println("untrez le matricule du nouveu employer");
         /*todo later*/
     }
-    public void updateDecouvert(Compte compte){
+
+    public void updateDecouvert(Compte compte) {
         System.out.println("untrez le nouveu decouvert");
         Courant crt = (Courant) compte;
         System.out.println("decouvert : " + crt.getDecouvert());
         crt.setDecouvert(sc.nextDouble());
-        if (compteDAO.updateDecouvert(crt) > 0){
+        if (compteDAO.updateDecouvert(crt) > 0) {
             System.out.println("decouvert updated succesfully");
-        }else{
+        } else {
             System.out.println("une erreur est servenu");
         }
     }
-    public void updateTauxInteret(Compte compte){
+
+    public void updateTauxInteret(Compte compte) {
         System.out.println("untrez le nouveu taux d'interet");
         Epargne epargne = (Epargne) compte;
         System.out.println("taux d'interet : " + epargne.getTauxInteret());
         epargne.setTauxInteret(sc.nextDouble());
-        if (compteDAO.updateTauxInteret(epargne) > 0){
+        if (compteDAO.updateTauxInteret(epargne) > 0) {
             System.out.println("decouvert updated succesfully");
-        }else{
+        } else {
             System.out.println("une erreur est servenu");
         }
     }
-    public void searchByClient(){
+
+    public void searchByClient() {
         System.out.println("enter Client code serach with");
         Integer code = sc.nextInt();
         sc.nextLine();
@@ -310,22 +314,23 @@ public class CompteManager extends Manager {
             System.out.println(compte.getNumero());
         }*/
     }
-    public void searchAccountByStatus(){
+
+    public void searchAccountByStatus() {
         System.out.println("select status");
-        for (Etat_enum etat: Etat_enum.values()
-             ) {
-            System.out.println(etat.ordinal() +" : "+ etat.name());
+        for (Etat_enum etat : Etat_enum.values()
+        ) {
+            System.out.println(etat.ordinal() + " : " + etat.name());
         }
         int choix = sc.nextInt();
         String etat = "actif";
         switch (choix) {
-            case 0 -> etat ="actif";
-            case 1 -> etat ="suspendu";
-            case 2 -> etat ="saisi";
+            case 0 -> etat = "actif";
+            case 1 -> etat = "suspendu";
+            case 2 -> etat = "saisi";
         }
         List<Compte> comptes = compteDAO.findByStatus(etat);
-        for (Compte compte: comptes
-             ) {
+        for (Compte compte : comptes
+        ) {
             System.out.println(compte.getNumero());
         }
     }
@@ -344,7 +349,7 @@ public class CompteManager extends Manager {
             try {
                 LocalDate inputDate = LocalDate.parse(tmp_date, formatter);
                 comptes = compteDAO.findByDateCreation(inputDate);
-                for (Compte compte: comptes
+                for (Compte compte : comptes
                 ) {
                     System.out.println(compte.getNumero());
                 }

@@ -51,12 +51,20 @@ public class CompteDAO implements CompteDAOInterface {
                     compte.setSolde(result.getDouble("solde"));
                     compte.setDateCreation(result.getDate("datecreation").toLocalDate());
                     compte.setDecouvert(result.getDouble("decouvert"));
+                    Optional<Person> person = new ClientDAO().searchByClientCode(result.getInt("clientcode"));
                     Client client = new Client();
-                    client.setCode(result.getInt("clientcode"));
+                    if (person.isPresent()){
+                        client = (Client)person.get();
+                    }
                     compte.setClient(client);
+
                     Employer employer = new Employer();
-                    employer.setMatricule(result.getInt("employermatricule"));
+                    Optional<Person> optEmp = new EmployerDAO().searchByMatricule(result.getInt("employermatricule"));
+                    if (optEmp.isPresent()){
+                        employer = (Employer) optEmp.get();
+                    }
                     compte.setEmplyer(employer);
+
                     String etatValue = result.getString("etat");
                     Etat_enum etat = Etat_enum.valueOf(etatValue);
                     compte.setEtat(etat);
@@ -78,11 +86,18 @@ public class CompteDAO implements CompteDAOInterface {
 
 
                     Client client = new Client();
-                    client.setCode(result.getInt("clientcode"));
+                    Optional<Person> person = new ClientDAO().searchByClientCode(result.getInt("clientcode"));
+                    if (person.isPresent()){
+                        client = (Client)person.get();
+                    }
                     compte.setClient(client);
 
+
                     Employer employer = new Employer();
-                    employer.setMatricule(result.getInt("employermatricule"));
+                    Optional<Person> optEmp = new EmployerDAO().searchByMatricule(result.getInt("employermatricule"));
+                    if (optEmp.isPresent()){
+                        employer = (Employer) optEmp.get();
+                    }
                     compte.setEmplyer(employer);
 
                     String etatValue = result.getString("etat");

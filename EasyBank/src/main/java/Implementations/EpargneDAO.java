@@ -29,7 +29,6 @@ public class EpargneDAO extends CompteDAO implements EpargneDAOInterface {
             ResultSet result = stmt.executeQuery();
             if (result.next()) {
                 long accountNumber = result.getLong("numero");
-                System.out.println("Created account with numero: " + accountNumber);
 
                 String insertEpargneQuery = "INSERT INTO epargne(compteNumero, tauxinteret) VALUES (?, ?);";
                 PreparedStatement stmtEpargne = connection.prepareStatement(insertEpargneQuery);

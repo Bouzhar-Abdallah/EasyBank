@@ -1,9 +1,13 @@
 package org.example;
 
 
+import Implementations.EmployerDAO;
 import Manager.*;
+import Objects.Employer;
 import Objects.Operation;
+import Objects.Person;
 
+import java.util.Optional;
 import java.util.Scanner;
 
 
@@ -22,14 +26,9 @@ public class Main {
             System.out.println("2. Supprimer un employé");
             System.out.println("3. Rechercher un employé");
             System.out.println("4. Mettre à jour un employé");
-            System.out.println("5. Rechercher des employés par attributs");
             System.out.println("0. Retour au menu principal");
             System.out.print("Votre choix : ");
-
-            // Lisez le choix de l'utilisateur
             choice = scanner.nextInt();
-            //scanner.nextLine(); // Lire la nouvelle ligne après le nombre
-
             switch (choice) {
                 case 1 -> empManager.create();
                 case 2 -> empManager.delete();
@@ -127,8 +126,6 @@ public class Main {
             System.out.print("Votre choix : ");
 
             choice = scanner.nextInt();
-            //operationManager.create();
-            //operationManager.delete();
             switch (choice) {
                 case 1 -> operationManager.create();
                 case 2 -> operationManager.delete();
@@ -180,30 +177,37 @@ public class Main {
             choice = Integer.parseInt(scanner.nextLine());
 
             switch (choice) {
-                case 1:
-                    affectationManager.create();
-                    break;
-                case 2:
-            affectationManager.deleteAffectation();
-                    break;
-                case 3:
-                    affectationManager.showEmployerAffectations();
-                    break;
-                case 4:
-                    affectationManager.showAffectationsStats();
-                    break;
-                case 0:
-                    System.out.println("Retour au menu principal.");
-                    break;
-                default:
-                    System.out.println("Choix invalide. Réessayez.");
+                case 1 -> affectationManager.create();
+                case 2 -> affectationManager.deleteAffectation();
+                case 3 -> affectationManager.showEmployerAffectations();
+                case 4 -> affectationManager.showAffectationsStats();
+                case 0 -> System.out.println("Retour au menu principal.");
+                default -> System.out.println("Choix invalide. Réessayez.");
             }
         } while (choice != 0);
     }
+    public static Employer executingEmployee;
+    public static Employer getExecutingEmployee() {
+        return executingEmployee;
+    }
 
-    public static void main(String[] args) {
-
+    private static void logIn(){
+        //Employer executingEmployee = Main.getExecutingEmployee();
         Scanner sc = new Scanner(System.in);
+        System.out.println("entrez votre matricule");
+        int matricule = sc.nextInt();
+        sc.nextLine();
+        Optional<Person> emp = new EmployerDAO().searchByMatricule(matricule);
+        emp.ifPresent(person -> executingEmployee = (Employer) person);
+        if (emp.isEmpty()){
+            System.out.println("matricule non trouvé");
+        }
+    }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        do {
+            logIn();
+        }while(executingEmployee == null);
         int choice;
         do {
             // Affichez le menu
@@ -221,29 +225,14 @@ public class Main {
             sc.nextLine();
 
             switch (choice) {
-                case 1:
-                    handleEmployeeMenu();
-                    break;
-                case 2:
-                    handleClientMenu();
-                    break;
-                case 3:
-                    handleAccountMenu();
-                    break;
-                case 4:
-                    handleOperationMenu();
-                    break;
-                case 5:
-                    handleMissionMenu();
-                    break;
-                case 6:
-                    handleAffectationMenu();
-                    break;
-                case 0:
-                    System.out.println("Au revoir !");
-                    break;
-                default:
-                    System.out.println("Choix invalide. Réessayez.");
+                case 1 -> handleEmployeeMenu();
+                case 2 -> handleClientMenu();
+                case 3 -> handleAccountMenu();
+                case 4 -> handleOperationMenu();
+                case 5 -> handleMissionMenu();
+                case 6 -> handleAffectationMenu();
+                case 0 -> System.out.println("Au revoir !");
+                default -> System.out.println("Choix invalide. Réessayez.");
             }
         } while (choice != 0);
 

@@ -13,11 +13,12 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
-public class EmployerManager extends Manager{
+public class EmployerManager extends Manager {
 
     public void create() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("nouveu emplyoer :");
         try {
-            Scanner sc = new Scanner(System.in);
             Employer emp = new Employer();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -65,9 +66,6 @@ public class EmployerManager extends Manager{
                     System.out.println("Format de date invalide. Veuillez utiliser le format aaaa-mm-jj.");
                 }
             }
-            //employerDAO.create(emp);
-            /*Employer test = new Employer();
-            employerDAO.create(test);*/
             Optional<Person> optionalEmp = employerDAO.create(emp);
             if (optionalEmp.isPresent()) {
                 Employer createdPerson = (Employer) optionalEmp.get();
@@ -75,7 +73,6 @@ public class EmployerManager extends Manager{
             } else {
                 System.out.println("*****   Opération d'ajout d'emploi a échoué   *****");
             }
-            sc.close();
         } catch (Exception e) {
             System.out.println(e.getClass() + "::" + e.getMessage());
         }
@@ -83,7 +80,7 @@ public class EmployerManager extends Manager{
 
     public void delete() {
         Scanner sc = new Scanner(System.in);
-
+        showAll();
         System.out.println("enter employe matricule to delete");
         Integer matriculeTodelete = sc.nextInt();
         sc.nextLine();
@@ -148,7 +145,7 @@ public class EmployerManager extends Manager{
             System.out.println(String.format("*****   found employee | Matricule :[%d] | nom :[%s] |  *****", employerToUpdate.getMatricule(), employerToUpdate.getNom()));
             /*start from here*/
             /* nom */
-            System.out.println("nom :"+employerToUpdate.getNom());
+            System.out.println("nom :" + employerToUpdate.getNom());
             System.out.println("update it ?");
             System.out.println("Press [y] to confirm \n");
             System.out.println("Press [any] to go next \n");
@@ -157,7 +154,7 @@ public class EmployerManager extends Manager{
                 employerToUpdate.setNom(sc.nextLine());
             }
             /* prenom */
-            System.out.println("prenom :"+employerToUpdate.getPrenom());
+            System.out.println("prenom :" + employerToUpdate.getPrenom());
             System.out.println("update it ?");
             System.out.println("Press [y] to confirm \n");
             System.out.println("Press [any] to go next \n");
@@ -166,7 +163,7 @@ public class EmployerManager extends Manager{
                 employerToUpdate.setPrenom(sc.nextLine());
             }
             /* numeroTel*/
-            System.out.println("numero de tel :"+employerToUpdate.getNumeroTel());
+            System.out.println("numero de tel :" + employerToUpdate.getNumeroTel());
             System.out.println("update it ?");
             System.out.println("Press [y] to confirm \n");
             System.out.println("Press [any] to go next \n");
@@ -175,7 +172,7 @@ public class EmployerManager extends Manager{
                 employerToUpdate.setNumeroTel(sc.nextLine());
             }
             /* adresse*/
-            System.out.println("adresse :"+employerToUpdate.getAdresse());
+            System.out.println("adresse :" + employerToUpdate.getAdresse());
             System.out.println("update it ?");
             System.out.println("Press [y] to confirm \n");
             System.out.println("Press [any] to go next \n");
@@ -184,7 +181,7 @@ public class EmployerManager extends Manager{
                 employerToUpdate.setAdresse(sc.nextLine());
             }
             /* adressmail*/
-            System.out.println("adresse Email :"+employerToUpdate.getAdresseEmail());
+            System.out.println("adresse Email :" + employerToUpdate.getAdresseEmail());
             System.out.println("update it ?");
             System.out.println("Press [y] to confirm \n");
             System.out.println("Press [any] to go next \n");
@@ -194,7 +191,7 @@ public class EmployerManager extends Manager{
             }
             /* datenaissance */
 
-            System.out.println("Date de naissance :"+employerToUpdate.getDateNaissance());
+            System.out.println("Date de naissance :" + employerToUpdate.getDateNaissance());
             System.out.println("update it ?");
             System.out.println("Press [y] to confirm \n");
             System.out.println("Press [any] to go next \n");
@@ -218,7 +215,7 @@ public class EmployerManager extends Manager{
                 }
             }
             /* daterecrutement*/
-            System.out.println("Date de recrutement :"+employerToUpdate.getDateRecrutement());
+            System.out.println("Date de recrutement :" + employerToUpdate.getDateRecrutement());
             System.out.println("update it ?");
             System.out.println("Press [y] to confirm \n");
             System.out.println("Press [any] to go next \n");
@@ -242,10 +239,10 @@ public class EmployerManager extends Manager{
             }
 
             Optional<Person> updatedEmp = employerDAO.update(employerToUpdate);
-            if (updatedEmp.isPresent()){
+            if (updatedEmp.isPresent()) {
                 System.out.println("operation est effectué avec succes");
                 return;
-            }else{
+            } else {
                 System.out.println("l'operation a echoué");
                 return;
             }
@@ -298,21 +295,21 @@ public class EmployerManager extends Manager{
             default -> {
             }
         }
-        if (optionalPerson.isPresent()){
+        if (optionalPerson.isPresent()) {
             Employer employee = (Employer) optionalPerson.get();
 
-                System.out.println("Employee Matricule: " + employee.getMatricule());
-                System.out.println("Nom: " + employee.getNom());
-                System.out.println("Prenom: " + employee.getPrenom());
-                System.out.println("Date de Naissance: " + employee.getDateNaissance());
-                System.out.println("Numero de Telephone: " + employee.getNumeroTel());
-                System.out.println("Adresse: " + employee.getAdresse());
-                System.out.println("Adresse Email: " + employee.getAdresseEmail());
-                System.out.println("Date de Recrutement: " + employee.getDateRecrutement());
+            System.out.println("Employee Matricule: " + employee.getMatricule());
+            System.out.println("Nom: " + employee.getNom());
+            System.out.println("Prenom: " + employee.getPrenom());
+            System.out.println("Date de Naissance: " + employee.getDateNaissance());
+            System.out.println("Numero de Telephone: " + employee.getNumeroTel());
+            System.out.println("Adresse: " + employee.getAdresse());
+            System.out.println("Adresse Email: " + employee.getAdresseEmail());
+            System.out.println("Date de Recrutement: " + employee.getDateRecrutement());
 
-                System.out.println("------------------------------");
+            System.out.println("------------------------------");
 
-        }else{
+        } else {
             System.out.println("employer not found");
             System.out.flush();
             searchByAttribute();

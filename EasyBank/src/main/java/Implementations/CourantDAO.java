@@ -25,7 +25,6 @@ public class CourantDAO extends CompteDAO implements CourantDAOInterface {
             ResultSet result = stmt.executeQuery();
             if (result.next()) {
                 long accountNumber = result.getLong("numero");
-                System.out.println("Created account with numero: " + accountNumber);
 
                 String insertEpargneQuery = "INSERT INTO courant(compteNumero, decouvert) VALUES (?,?);";
                 PreparedStatement stmtEpargne = connection.prepareStatement(insertEpargneQuery);

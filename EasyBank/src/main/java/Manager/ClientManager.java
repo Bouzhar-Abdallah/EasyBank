@@ -58,7 +58,7 @@ public class ClientManager extends Manager{
             } else {
                 System.out.println("*****   Opération d'ajout d'emploi a échoué   *****");
             }
-            sc.close();
+
                 return optionalClient ;
         } catch (Exception e) {
             System.out.println(e.getClass() + "::" + e.getMessage());
@@ -97,7 +97,9 @@ public class ClientManager extends Manager{
     }
 
     public void showAll() {
-        System.out.println("All Employees:");
+        System.out.println("_______________");
+        System.out.println("All clients:");
+        System.out.println("_______________");
 
         List<Person> employees = clientDAO.getAll();
 
