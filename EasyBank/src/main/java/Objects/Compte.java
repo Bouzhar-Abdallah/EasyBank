@@ -7,12 +7,12 @@ import java.util.Date;
 import java.util.List;
 
 public abstract class Compte {
-    private Long numero;
-    private Double solde;
-    private LocalDate dateCreation;
-    private Etat_enum etat;
-    private Client client;
-    private Employer emplyer;
+    protected Long numero;
+    protected Double solde;
+    protected LocalDate dateCreation;
+    protected Etat_enum etat;
+    protected Client client;
+    protected Employer emplyer;
 
     public Long getNumero() {
         return numero;
