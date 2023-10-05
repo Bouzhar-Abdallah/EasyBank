@@ -13,7 +13,7 @@ public abstract class Compte {
     private Etat_enum etat;
     private Client client;
     private Employer emplyer;
-
+    private Agence egence;
     public Long getNumero() {
         return numero;
     }

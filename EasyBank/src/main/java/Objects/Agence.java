@@ -8,7 +8,15 @@ public class Agence {
     private String numeroTel;
     private String adresse;
     private List<Compte> comptes;
-    private List<Employer> employers;
+    private List<AffectationAgence> affectationAgences;
+
+    public List<AffectationAgence> getAffectationAgences() {
+        return affectationAgences;
+    }
+
+    public void setAffectationAgences(List<AffectationAgence> affectationAgences) {
+        this.affectationAgences = affectationAgences;
+    }
 
     public int getCode() {
         return code;
@@ -50,11 +58,4 @@ public class Agence {
         this.comptes = comptes;
     }
 
-    public List<Employer> getEmployers() {
-        return employers;
-    }
-
-    public void setEmployers(List<Employer> employers) {
-        this.employers = employers;
-    }
 }

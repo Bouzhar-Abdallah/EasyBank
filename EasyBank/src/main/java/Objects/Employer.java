@@ -9,6 +9,15 @@ public class Employer extends Person{
 
     private LocalDate dateRecrutement;
     private List<Affectation> affectations;
+    private List<AffectationAgence> affectationAgences;
+
+    public List<AffectationAgence> getAffectationAgences() {
+        return affectationAgences;
+    }
+
+    public void setAffectationAgences(List<AffectationAgence> affectationAgences) {
+        this.affectationAgences = affectationAgences;
+    }
 
     public Integer getMatricule() {
         return matricule;
