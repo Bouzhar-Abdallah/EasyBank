@@ -2,7 +2,7 @@ package Implementations;
 
 import Objects.Employer;
 import Objects.Person;
-import Services.PersonDAOInterface;
+import services.PersonDAOInterface;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,14 +1,10 @@
 package Implementations;
 
 import Objects.Client;
-import Objects.Affectation;
-import Objects.Employer;
 import Objects.Person;
-import Services.ClientDAOInterface;
-import Services.PersonDAOInterface;
-import Utils.DBConnection;
+import services.ClientDAOInterface;
+import utils.DBConnection;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

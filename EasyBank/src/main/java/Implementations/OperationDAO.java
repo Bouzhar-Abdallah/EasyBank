@@ -1,21 +1,18 @@
 package Implementations;
 
-import Enums.Etat_enum;
 import Enums.Type_operation_enum;
 import Objects.Compte;
 import Objects.Employer;
 import Objects.Operation;
 import Objects.Person;
-import Services.OperationsInterface;
-import Utils.DBConnection;
+import services.OperationsInterface;
+import utils.DBConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.Optional;
-import java.util.Properties;
 
 public class OperationDAO implements OperationsInterface {
     protected Connection connection;

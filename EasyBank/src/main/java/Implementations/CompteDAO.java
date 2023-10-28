@@ -2,8 +2,8 @@ package Implementations;
 
 import Enums.Etat_enum;
 import Objects.*;
-import Services.CompteDAOInterface;
-import Utils.DBConnection;
+import services.CompteDAOInterface;
+import utils.DBConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

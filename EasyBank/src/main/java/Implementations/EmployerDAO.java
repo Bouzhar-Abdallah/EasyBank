@@ -3,16 +3,12 @@ package Implementations;
 import Objects.Employer;
 import Objects.Affectation;
 import Objects.Person;
-import Services.EmployerDAOInterface;
-import Services.PersonDAOInterface;
-import Utils.DBConnection;
+import services.EmployerDAOInterface;
+import utils.DBConnection;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
