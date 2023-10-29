@@ -322,6 +322,15 @@ public class Main {
         courant.setEmplyer(employer);
         courantService.create(courant);
     }
+    public static void createMission(){
+        MissionService missionService = new MissionService(new MissionImp());
+        Mission mission = new Mission(
+                123,
+                "agence",
+                "nom agence orm"
+        );
+        missionService.create(mission);
+    }
     public static void main(String[] args) {
         /*System.out.println("********* client *********");
         createClient();
@@ -333,7 +342,9 @@ public class Main {
         /*System.out.println("********* epargne *********");
         createEpargne();*/
         //createCourant();
-        
+        createMission();
+
+
         /*
         Scanner sc = new Scanner(System.in);
         do {
