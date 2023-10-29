@@ -3,6 +3,13 @@ package Objects;
 import java.util.List;
 
 public class Agence {
+    public Agence(int code, String nom, String numeroTel, String adresse) {
+        this.code = code;
+        this.nom = nom;
+        this.numeroTel = numeroTel;
+        this.adresse = adresse;
+    }
+
     private int code;
     private String nom;
     private String numeroTel;

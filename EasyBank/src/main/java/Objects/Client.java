@@ -1,11 +1,17 @@
 package Objects;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class Client extends Person{
+    public Client(String nom, String prenom, LocalDate dateNaissance, String numeroTel, String adresse, String adresseEmail, Integer code) {
+        super(nom, prenom, dateNaissance, numeroTel, adresse, adresseEmail);
+        this.code = code;
+    }
+
     private Integer code;
 
-    private Compte compte;
+    private List<Compte> compte;
     private List<Demande> demandes;
 
     public List<Demande> getDemandes() {
@@ -24,12 +30,11 @@ public class Client extends Person{
         this.code = code;
     }
 
-    public Compte getCompte() {
+    public List<Compte> getCompte() {
         return compte;
     }
 
-    public void setCompte(Compte compte) {
+    public void setCompte(List<Compte> compte) {
         this.compte = compte;
     }
-
 }

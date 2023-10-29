@@ -6,30 +6,21 @@ import java.util.Date;
 import java.util.List;
 
 public abstract class Person {
-    protected Integer id;
+    public Person(String nom, String prenom, LocalDate dateNaissance, String numeroTel, String adresse, String adressemail) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.dateNaissance = dateNaissance;
+        this.numeroTel = numeroTel;
+        this.adresse = adresse;
+        this.adressemail = adressemail;
+    }
+
     protected String nom;
     protected String prenom;
     protected LocalDate dateNaissance;
     protected String numeroTel;
     protected String adresse;
-    protected String adresseEmail;
-    protected List<Compte> comptes;
-
-    public List<Compte> getComptes() {
-        return comptes;
-    }
-
-    public void setComptes(List<Compte> comptes) {
-        this.comptes = comptes;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    protected String adressemail;
 
     public String getNom() {
         return nom;
@@ -72,11 +63,11 @@ public abstract class Person {
     }
 
     public String getAdresseEmail() {
-        return adresseEmail;
+        return adressemail;
     }
 
     public void setAdresseEmail(String adresseEmail) {
-        this.adresseEmail = adresseEmail;
+        this.adressemail = adresseEmail;
     }
 
 

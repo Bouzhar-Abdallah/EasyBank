@@ -5,6 +5,19 @@ import java.util.Date;
 import java.util.List;
 
 public class Employer extends Person{
+    public Employer(String nom,
+                    String prenom,
+                    LocalDate dateNaissance,
+                    String numeroTel,
+                    String adresse,
+                    String adressemail,
+                    Integer matricule,
+                    LocalDate dateRecrutement) {
+        super(nom, prenom, dateNaissance, numeroTel, adresse, adressemail);
+        this.matricule = matricule;
+        this.dateRecrutement = dateRecrutement;
+    }
+
     private Integer matricule;
 
     private LocalDate dateRecrutement;
@@ -13,6 +26,15 @@ public class Employer extends Person{
 
     public List<AffectationAgence> getAffectationAgences() {
         return affectationAgences;
+    }
+    protected List<Compte> comptes;
+
+    public List<Compte> getComptes() {
+        return comptes;
+    }
+
+    public void setComptes(List<Compte> comptes) {
+        this.comptes = comptes;
     }
 
     public void setAffectationAgences(List<AffectationAgence> affectationAgences) {

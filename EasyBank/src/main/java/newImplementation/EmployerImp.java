@@ -1,24 +1,25 @@
 package newImplementation;
 
 import Objects.Employer;
+import utils.DBConnection;
 
 import java.util.List;
 import java.util.Optional;
 
 public class EmployerImp extends DataImplimentation<Employer,String>{
-    public Optional create(Employer employer) {
-        return super.create(employer);
+    public EmployerImp() {
+        connection = DBConnection.getDBConnection();
     }
 
-    public Optional update(Employer employer) {
+    public Optional<Employer> update(Employer employer) {
         return super.update(employer);
     }
 
-    public Optional findByID(String id, Class<Employer> employerClass) {
+    public Optional<Employer> findByID(String id, Class<Employer> employerClass) {
         return super.findByID(id, employerClass);
     }
 
-    public List getAll(Class<Employer> employerClass) {
+    public List<Employer> getAll(Class<Employer> employerClass) {
         return super.getAll(employerClass);
     }
 

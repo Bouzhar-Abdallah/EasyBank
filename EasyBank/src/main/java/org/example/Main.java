@@ -1,12 +1,16 @@
 package org.example;
 
 
-import Implementations.EmployerDAO;
-import Manager.*;
-import Objects.Employer;
-import Objects.Operation;
-import Objects.Person;
 
+import Objects.*;
+import newImplementation.AgenceImp;
+import newImplementation.ClientImp;
+import newImplementation.EmployerImp;
+import newService.AgenceService;
+import newService.ClientService;
+import newService.EmployerService;
+
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -14,7 +18,7 @@ import java.util.Scanner;
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
-    private static void handleEmployeeMenu() {
+/*    private static void handleEmployeeMenu() {
         EmployerManager empManager = new EmployerManager();
         Scanner scanner = new Scanner(System.in);
         int choice;
@@ -53,7 +57,7 @@ public class Main {
             System.out.println("3. Rechercher des clients par attributs");
             System.out.println("4. List des client");
             System.out.println("5. Mettre à jour un client");
-            /*System.out.println("6. Obtenir les comptes d'un client");*/
+            *//*System.out.println("6. Obtenir les comptes d'un client");*//*
             System.out.println("0. Retour au menu principal");
             System.out.print("Votre choix : ");
 
@@ -67,9 +71,9 @@ public class Main {
                 case 4 -> cltManager.showAll();
                 case 5 -> cltManager.update();
 
-                /*case 6:
+                *//*case 6:
                     cltManager.getClientAccount();
-                    break;*/
+                    break;*//*
                 case 0 -> System.out.println("Retour au menu principal.");
                 default -> System.out.println("Choix invalide. Réessayez.");
             }
@@ -202,8 +206,47 @@ public class Main {
         if (emp.isEmpty()){
             System.out.println("matricule non trouvé");
         }
+    }*/
+    public static void createEmp(){
+        EmployerService employerService = new EmployerService(new EmployerImp());
+        Employer employer = new Employer(
+                "orm nom",
+                "orm prenom",
+                LocalDate.now(),
+                "orm numero tell",
+                "orm adresse",
+                "orm email",
+                2331,
+                LocalDate.now()
+        );
+        employerService.create(employer);
+    }
+    public static void createClient(){
+        ClientService clientService = new ClientService(new ClientImp());
+        Client client = new Client(
+                "orm nom",
+                "orm prenom",
+                LocalDate.now(),
+                "orm numero tell",
+                "orm adresse",
+                "orm email",
+                334598
+        );
+        clientService.create(client);
+    }
+    public static void createAgence(){
+        AgenceService agenceService = new AgenceService(new AgenceImp());
+        Agence agence = new Agence(
+                7683,
+                "nom",
+                "ejhbhjebjh",
+                "adresse"
+        );
+        agenceService.create(agence);
     }
     public static void main(String[] args) {
+        createClient();
+        /*
         Scanner sc = new Scanner(System.in);
         do {
             logIn();
@@ -237,6 +280,7 @@ public class Main {
         } while (choice != 0);
 
         sc.close();
+*/
 
 
     }
