@@ -1,6 +1,9 @@
 package Objects;
 
 import Enums.Etat_enum;
+import annotations.CustomField;
+import annotations.Id;
+import annotations.ManyToOne;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -14,12 +17,20 @@ public abstract class Compte {
         this.etat = etat;
     }
 
+    @CustomField
+    @Id
     private Long numero;
+    @CustomField
     private Double solde;
+    @CustomField
     private LocalDate dateCreation;
+    @CustomField
     private Etat_enum etat;
+    @ManyToOne(targetEntity = Client.class)
     private Client client;
+    @ManyToOne(targetEntity = Employer.class)
     private Employer emplyer;
+    @ManyToOne(targetEntity = Agence.class)
     private Agence egence;
     public Long getNumero() {
         return numero;
@@ -60,6 +71,7 @@ public abstract class Compte {
     public void setEtat(Etat_enum etat) {
         this.etat = etat;
     }
+
 
     public Client getClient() {
         return client;

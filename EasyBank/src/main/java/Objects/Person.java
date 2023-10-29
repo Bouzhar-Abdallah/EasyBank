@@ -1,5 +1,7 @@
 package Objects;
 
+import annotations.CustomField;
+
 import javax.management.ObjectInstance;
 import java.time.LocalDate;
 import java.util.Date;
@@ -15,11 +17,17 @@ public abstract class Person {
         this.adressemail = adressemail;
     }
 
+    @CustomField
     protected String nom;
+    @CustomField
     protected String prenom;
+    @CustomField
     protected LocalDate dateNaissance;
+    @CustomField
     protected String numeroTel;
+    @CustomField
     protected String adresse;
+    @CustomField
     protected String adressemail;
 
     public String getNom() {

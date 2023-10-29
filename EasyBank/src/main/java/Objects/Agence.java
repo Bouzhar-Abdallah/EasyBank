@@ -1,5 +1,9 @@
 package Objects;
 
+import annotations.CustomField;
+import annotations.Id;
+import annotations.OneToMany;
+
 import java.util.List;
 
 public class Agence {
@@ -10,10 +14,16 @@ public class Agence {
         this.adresse = adresse;
     }
 
-    private int code;
+    @CustomField
+    @Id
+    private Integer code;
+    @CustomField
     private String nom;
+    @CustomField
     private String numeroTel;
+    @CustomField
     private String adresse;
+    @OneToMany(targetEntity = Compte.class, mappedBy = "agence")
     private List<Compte> comptes;
     private List<AffectationAgence> affectationAgences;
 

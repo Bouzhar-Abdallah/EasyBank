@@ -1,5 +1,9 @@
 package Objects;
 
+import annotations.CustomField;
+import annotations.Id;
+import annotations.OneToMany;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -9,9 +13,12 @@ public class Client extends Person{
         this.code = code;
     }
 
+    @CustomField
+    @Id
     private Integer code;
 
-    private List<Compte> compte;
+    @OneToMany(targetEntity = Compte.class, mappedBy = "client")
+    private List<Compte> comptes;
     private List<Demande> demandes;
 
     public List<Demande> getDemandes() {
@@ -30,11 +37,11 @@ public class Client extends Person{
         this.code = code;
     }
 
-    public List<Compte> getCompte() {
-        return compte;
+    public List<Compte> getComptes() {
+        return comptes;
     }
 
-    public void setCompte(List<Compte> compte) {
-        this.compte = compte;
+    public void setComptes(List<Compte> comptes) {
+        this.comptes = comptes;
     }
 }

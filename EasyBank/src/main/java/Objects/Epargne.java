@@ -2,6 +2,7 @@ package Objects;
 
 
 import Enums.Etat_enum;
+import annotations.CustomField;
 
 import java.time.LocalDate;
 
@@ -11,6 +12,7 @@ public class Epargne extends Compte{
         this.tauxInteret = tauxInteret;
     }
 
+    @CustomField
     private Double tauxInteret;
 
     public Double getTauxInteret() {

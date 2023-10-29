@@ -1,5 +1,10 @@
 package Objects;
 
+
+import annotations.CustomField;
+import annotations.Id;
+import annotations.OneToMany;
+
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -18,8 +23,11 @@ public class Employer extends Person{
         this.dateRecrutement = dateRecrutement;
     }
 
+    @CustomField
+    @Id
     private Integer matricule;
 
+    @CustomField
     private LocalDate dateRecrutement;
     private List<Affectation> affectations;
     private List<AffectationAgence> affectationAgences;
@@ -27,6 +35,7 @@ public class Employer extends Person{
     public List<AffectationAgence> getAffectationAgences() {
         return affectationAgences;
     }
+    @OneToMany(targetEntity = Compte.class, mappedBy = "employer")
     protected List<Compte> comptes;
 
     public List<Compte> getComptes() {

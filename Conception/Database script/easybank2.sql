@@ -153,3 +153,5 @@ CREATE TABLE affectationAgence (
 
 ALTER Table person
 DROP COLUMN id;
+ALTER Table epargne
+DROP COLUMN comptenumero;

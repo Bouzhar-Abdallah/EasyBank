@@ -1,6 +1,7 @@
 package utils;
 
 public class DatabaseField<T> {
+    public DatabaseField(){}
     private String fieldName;
     private Class<T> fieldType;
     private T value;
@@ -9,6 +10,15 @@ public class DatabaseField<T> {
         this.fieldName = fieldName;
         this.fieldType = fieldType;
         this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return "DatabaseField{" +
+                "fieldName='" + fieldName + '\'' +
+                ", fieldType=" + fieldType +
+                ", value=" + value +
+                '}';
     }
 
     public String getFieldName() {
@@ -21,17 +31,5 @@ public class DatabaseField<T> {
 
     public T getValue() {
         return value;
-    }
-
-    public void setFieldName(String fieldName) {
-        this.fieldName = fieldName;
-    }
-
-    public void setFieldType(Class<T> fieldType) {
-        this.fieldType = fieldType;
-    }
-
-    public void setValue(T value) {
-        this.value = value;
     }
 }

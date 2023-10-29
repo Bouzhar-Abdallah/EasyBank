@@ -243,7 +243,7 @@ public class Main {
     public static void createAgence(){
         AgenceService agenceService = new AgenceService(new AgenceImp());
         Agence agence = new Agence(
-                7683,
+                76,
                 "nom",
                 "ejhbhjebjh",
                 "adresse"
@@ -251,21 +251,54 @@ public class Main {
         agenceService.create(agence);
     }
     public static void createEpargne(){
+        Employer employer = new Employer(
+                "orm nom",
+                "orm prenom",
+                LocalDate.now(),
+                "orm numero tell",
+                "orm adresse",
+                "orm email",
+                2331,
+                LocalDate.now()
+        );
+        Client client = new Client(
+                "orm nom",
+                "orm prenom",
+                LocalDate.now(),
+                "orm numero tell",
+                "orm adresse",
+                "orm email",
+                334598
+        );
+        Agence agence = new Agence(
+                7683,
+                "nom",
+                "ejhbhjebjh",
+                "adresse"
+        );
         EpargneService epargneService = new EpargneService(new EpargneImp());
         Epargne epargne = new Epargne(
-                0L,
+                12L,
                 0D,
                 LocalDate.now(),
                 Etat_enum.actif,
                 8D
         );
+        epargne.setClient(client);
+        epargne.setEgence(agence);
+        epargne.setEmplyer(employer);
         epargneService.create(epargne);
     }
     public static void main(String[] args) {
-        //createClient();
-        //createEmp();
-        createEpargne();
-
+        /*System.out.println("********* client *********");
+        createClient();
+        System.out.println("********* employer *********");
+        createEmp();
+        System.out.println("********* agence *********");
+        */
+        createAgence();
+        /*System.out.println("********* epargne *********");
+        createEpargne();*/
 
         /*
         Scanner sc = new Scanner(System.in);
