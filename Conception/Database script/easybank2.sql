@@ -155,3 +155,5 @@ ALTER Table person
 DROP COLUMN id;
 ALTER Table epargne
 DROP COLUMN comptenumero;
+ALTER Table courant
+DROP COLUMN comptenumero;

@@ -1,6 +1,7 @@
 package Objects;
 
 import Enums.Etat_enum;
+import annotations.CustomField;
 
 import java.time.LocalDate;
 
@@ -10,6 +11,7 @@ public class Courant extends Compte{
         this.decouvert = decouvert;
     }
 
+    @CustomField
     private Double decouvert;
 
     public Double getDecouvert() {

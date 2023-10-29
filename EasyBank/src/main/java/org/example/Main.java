@@ -4,14 +4,8 @@ package org.example;
 
 import Enums.Etat_enum;
 import Objects.*;
-import newImplementation.AgenceImp;
-import newImplementation.ClientImp;
-import newImplementation.EmployerImp;
-import newImplementation.EpargneImp;
-import newService.AgenceService;
-import newService.ClientService;
-import newService.EmployerService;
-import newService.EpargneService;
+import newImplementation.*;
+import newService.*;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -289,17 +283,57 @@ public class Main {
         epargne.setEmplyer(employer);
         epargneService.create(epargne);
     }
+    public static void createCourant(){
+        Employer employer = new Employer(
+                "orm nom",
+                "orm prenom",
+                LocalDate.now(),
+                "orm numero tell",
+                "orm adresse",
+                "orm email",
+                233341,
+                LocalDate.now()
+        );
+        Client client = new Client(
+                "orm nom",
+                "orm prenom",
+                LocalDate.now(),
+                "orm numero tell",
+                "orm adresse",
+                "orm email",
+                14598
+        );
+        Agence agence = new Agence(
+                7623,
+                "nom",
+                "ejhbhjebjh",
+                "adresse"
+        );
+        CourantService courantService = new CourantService(new CourantImp());
+        Courant courant = new Courant(
+                12L,
+                0D,
+                LocalDate.now(),
+                Etat_enum.actif,
+                5000D
+        );
+        courant.setClient(client);
+        courant.setEgence(agence);
+        courant.setEmplyer(employer);
+        courantService.create(courant);
+    }
     public static void main(String[] args) {
         /*System.out.println("********* client *********");
         createClient();
         System.out.println("********* employer *********");
         createEmp();
         System.out.println("********* agence *********");
-        */
         createAgence();
+        */
         /*System.out.println("********* epargne *********");
         createEpargne();*/
-
+        //createCourant();
+        
         /*
         Scanner sc = new Scanner(System.in);
         do {
