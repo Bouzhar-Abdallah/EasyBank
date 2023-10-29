@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 public class DataImplimentation<Entity, Identifier> implements InterfaceData<Entity, Identifier> {
     protected Connection connection;
+
     @Override
     public Optional<Entity> create(Entity entity) {
         System.out.println("from Data Implimentation");
@@ -24,7 +26,6 @@ public class DataImplimentation<Entity, Identifier> implements InterfaceData<Ent
 
         StringBuilder columns = new StringBuilder();
         StringBuilder placeholders = new StringBuilder();
-
         List<Field> allFields = new ArrayList<>();
 
 // Iterate through the class hierarchy to get all declared fields
@@ -64,7 +65,14 @@ public class DataImplimentation<Entity, Identifier> implements InterfaceData<Ent
 
                 field.setAccessible(true);
                 Object value = field.get(entity);
-                preparedStatement.setObject(parameterIndex, value);
+
+                if (field.getType().isEnum()) {
+                    // If the field is an enum, set it as Types.OTHER
+                    preparedStatement.setObject(parameterIndex, value, Types.OTHER);
+                } else {
+                    preparedStatement.setObject(parameterIndex, value);
+                }
+
                 parameterIndex++;
             }
 
@@ -75,6 +83,7 @@ public class DataImplimentation<Entity, Identifier> implements InterfaceData<Ent
         } catch (SQLException | IllegalAccessException e) {
             System.out.println(e.getMessage());
         }
+
 
 
 

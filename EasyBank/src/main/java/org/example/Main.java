@@ -2,13 +2,16 @@ package org.example;
 
 
 
+import Enums.Etat_enum;
 import Objects.*;
 import newImplementation.AgenceImp;
 import newImplementation.ClientImp;
 import newImplementation.EmployerImp;
+import newImplementation.EpargneImp;
 import newService.AgenceService;
 import newService.ClientService;
 import newService.EmployerService;
+import newService.EpargneService;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -57,7 +60,8 @@ public class Main {
             System.out.println("3. Rechercher des clients par attributs");
             System.out.println("4. List des client");
             System.out.println("5. Mettre à jour un client");
-            *//*System.out.println("6. Obtenir les comptes d'un client");*//*
+            */
+/*System.out.println("6. Obtenir les comptes d'un client");*//*
             System.out.println("0. Retour au menu principal");
             System.out.print("Votre choix : ");
 
@@ -71,9 +75,11 @@ public class Main {
                 case 4 -> cltManager.showAll();
                 case 5 -> cltManager.update();
 
-                *//*case 6:
+                */
+/*case 6:
                     cltManager.getClientAccount();
-                    break;*//*
+                    break;*/
+/*
                 case 0 -> System.out.println("Retour au menu principal.");
                 default -> System.out.println("Choix invalide. Réessayez.");
             }
@@ -244,8 +250,23 @@ public class Main {
         );
         agenceService.create(agence);
     }
+    public static void createEpargne(){
+        EpargneService epargneService = new EpargneService(new EpargneImp());
+        Epargne epargne = new Epargne(
+                0L,
+                0D,
+                LocalDate.now(),
+                Etat_enum.actif,
+                8D
+        );
+        epargneService.create(epargne);
+    }
     public static void main(String[] args) {
-        createClient();
+        //createClient();
+        //createEmp();
+        createEpargne();
+
+
         /*
         Scanner sc = new Scanner(System.in);
         do {

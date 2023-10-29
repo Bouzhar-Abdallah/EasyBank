@@ -151,3 +151,5 @@ CREATE TABLE affectationAgence (
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+ALTER Table person
+DROP COLUMN id;
