@@ -331,6 +331,31 @@ public class Main {
         );
         missionService.create(mission);
     }
+    public static void createAffectation(){
+        AffectationService affectationService = new AffectationService(new AffectationImp());
+        Employer employer = new Employer(
+                "orm nom",
+                "orm prenom",
+                LocalDate.now(),
+                "orm numero tell",
+                "orm adresse",
+                "orm email",
+                2331,
+                LocalDate.now()
+        );
+        Mission mission = new Mission(
+                123,
+                "agence",
+                "nom agence orm"
+        );
+        Affectation affectation = new Affectation(
+                LocalDate.now(),
+                LocalDate.of(1990,7,22),
+                employer,
+                mission
+        );
+        affectationService.create(affectation);
+    }
     public static void main(String[] args) {
         /*System.out.println("********* client *********");
         createClient();
@@ -342,8 +367,8 @@ public class Main {
         /*System.out.println("********* epargne *********");
         createEpargne();*/
         //createCourant();
-        createMission();
-
+        //createMission();
+        createAffectation();
 
         /*
         Scanner sc = new Scanner(System.in);

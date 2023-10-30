@@ -157,3 +157,7 @@ ALTER Table epargne
 DROP COLUMN comptenumero;
 ALTER Table courant
 DROP COLUMN comptenumero;
+ALTER Table affectation
+RENAME COLUMN employerid to employermatricule;
+ALTER Table affectation
+RENAME COLUMN missionid to missioncode;
