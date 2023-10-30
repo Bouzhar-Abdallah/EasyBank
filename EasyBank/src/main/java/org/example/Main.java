@@ -356,6 +356,32 @@ public class Main {
         );
         affectationService.create(affectation);
     }
+    public static void createAffectationAgence(){
+        Employer employer = new Employer(
+                "orm nom",
+                "orm prenom",
+                LocalDate.now(),
+                "orm numero tell",
+                "orm adresse",
+                "orm email",
+                2331,
+                LocalDate.now()
+        );
+        Agence agence = new Agence(
+                76,
+                "nom",
+                "ejhbhjebjh",
+                "adresse"
+        );
+        AffectationAgenceService affectationAgenceService = new AffectationAgenceService(new AffectationAgenceimp());
+        AffectationAgence affectationAgence = new AffectationAgence(
+                LocalDate.now(),
+                LocalDate.now(),
+                agence,
+                employer
+        );
+        affectationAgenceService.create(affectationAgence);
+    }
     public static void main(String[] args) {
         /*System.out.println("********* client *********");
         createClient();
@@ -368,8 +394,8 @@ public class Main {
         createEpargne();*/
         //createCourant();
         //createMission();
-        createAffectation();
-
+        //createAffectation();
+        createAffectationAgence();
         /*
         Scanner sc = new Scanner(System.in);
         do {

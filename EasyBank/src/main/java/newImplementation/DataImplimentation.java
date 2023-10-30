@@ -21,10 +21,10 @@ public class DataImplimentation<Entity, Identifier> implements InterfaceData<Ent
     @Override
     public Optional<Entity> create(Entity entity) {
         List<DatabaseField<Entity>> fields = generateDatabaseFields(entity);
-        for (DatabaseField<Entity> field: fields
+/*        for (DatabaseField<Entity> field: fields
              ) {
             System.out.println(field.toString());
-        }
+        }*/
         String tableName = entity.getClass().getSimpleName();
         String insertSql = generateInsertQuery(tableName, fields);
 

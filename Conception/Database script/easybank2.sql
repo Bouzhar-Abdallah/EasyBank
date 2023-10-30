@@ -143,8 +143,8 @@ EXECUTE FUNCTION update_compte_solde_retrait();
 CREATE TABLE affectationAgence (
     agenceCode INT,
     FOREIGN KEY (agenceCode) REFERENCES agence (code) ON DELETE CASCADE ON UPDATE CASCADE,
-    clientCode INT,
-    FOREIGN KEY (clientCode) REFERENCES client (code) ON DELETE CASCADE ON UPDATE CASCADE,
+    employermatricule INT,
+    FOREIGN KEY (employermatricule) REFERENCES employer (matricule) ON DELETE CASCADE ON UPDATE CASCADE,
     dateDebut DATE NOT NULL,
     dateFin DATE Null,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
